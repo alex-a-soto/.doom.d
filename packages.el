@@ -50,18 +50,30 @@
 ;; our package manager can't deal with; see raxod502/straight.el#279)
 ;(package! builtin-package :recipe (:branch "develop"))
 
-
+;;; outshine
 (package! outshine)
+;;; crux
 (package! crux)
+;;; swiper
 (package! swiper)
+;;; scratch
 (package! scratch)
+;;; org-now
 (package! org-now
   :recipe (:type git :host github
                  :repo "alphapapa/org-now"))
+;;; org-roam
 (package! org-roam
    :recipe (:type git :host github
                   :repo "jethrokuan/org-roam"))
+;;; org-super-agenda
 (package! org-super-agenda)
+;;; org-ql
 (package! org-ql)
+;;; hyperbole
 (package! hyperbole
-:recipe (:host github :repo "rswgnu/hyperbole"))
+  :recipe (:host github :repo "rswgnu/hyperbole"))
+;;; notdeft
+(package! notdeft
+  :recipe (:type git :host github :repo "hasu/notdeft"))
+;  :load-path "~/.emacs.d/straight/repos/notdeft/"
