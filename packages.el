@@ -66,14 +66,22 @@
 (package! org-roam
    :recipe (:type git :host github
                   :repo "jethrokuan/org-roam"))
+
+(package! company-org-roam
+     :recipe (:type git :host github
+                  :repo "jethrokuan/company-org-roam"))
+
 ;;; org-super-agenda
 (package! org-super-agenda)
 ;;; org-ql
 (package! org-ql)
 ;;; hyperbole
 (package! hyperbole
-  :recipe (:host github :repo "rswgnu/hyperbole"))
+  :recipe (:type git :host github :repo "rswgnu/hyperbole"))
 ;;; notdeft
 (package! notdeft
   :recipe (:type git :host github :repo "hasu/notdeft"))
 ;  :load-path "~/.emacs.d/straight/repos/notdeft/"
+;;; org-web-tools
+(package! org-web-tools)
+(package! org-journal)
