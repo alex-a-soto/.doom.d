@@ -107,12 +107,12 @@
 
 
 ;;;; Add some hooks for saving buffers
- (add-hook 'focus-out-hook (lambda () (interactive)(save-some-buffers t)))
- ;; save when frame is closed
- (add-hook 'delete-frame-functions (lambda () (interactive)(save-some-buffers t)))
+(add-hook 'focus-out-hook (lambda () (interactive)(save-some-buffers t)))
+;; save when frame is closed
+(add-hook 'delete-frame-functions (lambda () (interactive)(save-some-buffers t)))
 
 ;;;; Enable narrow functions
-    (put 'narrow-to-page 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 ;;; Packages
 ;;;; Which Key
@@ -258,69 +258,78 @@
   (setq org-use-speed-commands t))
 
 ;;;;; org-todo-keywords
-   (setq org-todo-keywords
-	 (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-		 (sequence "WAITING(w)" "HOLD(h)" "DELEGATE(g)" "|" "CANCELLED(c)" "SCHEDULED(s)"))))
+(setq org-todo-keywords
+	    (quote ((sequence "TODO(t)" "NEXT(n)" "IN-PROGRESS(i)" "|" "DONE(d)")
+		          (sequence "WAITING(w)" "HOLD(h)" "DELEGATE(g)" "|" "CANCELLED(c)" "SCHEDULED(s)"))))
 
- (setq org-treat-S-cursor-todo-selection-as-state-change nil)
+(setq org-treat-S-cursor-todo-selection-as-state-change nil)
+
+(custom-declare-face '+org-todo-active '((t (:inherit (bold font-lock-constant-face org-todo)))) "")
+(custom-declare-face '+org-todo-project '((t (:inherit (bold font-lock-doc-face org-todo)))) "")
+(custom-declare-face '+org-todo-onhold '((t (:inherit (bold warning org-todo)))) "")
 
 ;;;;; org-todo-keyword-faces
-   (setq org-todo-keyword-faces
-        (quote (("TODO" :foreground "red" :weight bold)
-	        ("NEXT" :foreground "#007cee" :weight bold)
-	        ("DONE" :foreground "forest green" :weight bold)
-	        ("WAITING" :foreground "orange" :weight bold)
-          ("HOLD" :foreground "magenta" :weight bold)
-	        ("DELEGATE" :foreground "purple" :weight bold)
-	        ("CANCELLED" :foreground "red" :weight bold)
-	        ("SCHEDULED" :foreground "forest green" :weight bold))))
-;;;;; org-todo-state-tags-triggers
- (setq org-todo-state-tags-triggers
-	 (quote (("CANCELLED" ("CANCELLED" . t))
-		 ("WAITING" ("WAITING" . t))
-		 ("HOLD" ("WAITING") ("HOLD" . t))
-		 (done ("WAITING") ("HOLD"))
-		 ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-		 ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
-		 ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+(setq org-todo-keyword-faces
+      (quote (("TODO" :foreground "red" :weight bold)
+	            ("NEXT" :foreground "#007cee" :weight bold)
+              ("IN-PROGRESS" :foreground "yellow" :weight bold)
+	            ("DONE" :foreground "forest green" :weight bold)
+	            ("WAITING" :foreground "orange" :weight bold)
+              ("HOLD" :foreground "magenta" :weight bold)
+	            ("DELEGATE" :foreground "purple" :weight bold)
+	            ("CANCELLED" :foreground "red" :weight bold)
+	            ("SCHEDULED" :foreground "forest green" :weight bold)
 
- (setq org-use-fast-todo-selection t)
+              (quote (("[-]"  . +org-todo-active)
+                      ("STRT" . +org-todo-active)
+                      ("[?]"  . +org-todo-onhold)
+                      ("WAIT" . +org-todo-onhold))))))
+;;;;; org-todo-state-tags-triggers
+(setq org-todo-state-tags-triggers
+	    (quote (("CANCELLED" ("CANCELLED" . t))
+		          ("WAITING" ("WAITING" . t))
+		          ("HOLD" ("WAITING") ("HOLD" . t))
+		          (done ("WAITING") ("HOLD"))
+		          ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+		          ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+		          ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+
+(setq org-use-fast-todo-selection t)
 
 ;;;;; org-refile
-  (setq org-refile-targets '((nil :maxlevel . 9)
-				                     (org-agenda-files :maxlevel . 9)))
+(setq org-refile-targets '((nil :maxlevel . 9)
+				                   (org-agenda-files :maxlevel . 9)))
 
 (setq org-refile-use-outline-path 'file)
 (setq org-outline-path-complete-in-steps nil)
 
 (setq org-refile-allow-creating-parent-nodes (quote confirm))
-(setq org-refile-target-verify-function 'as/verify-refile-target)
 
 ;;;;; org-babel
-   (defadvice org-babel-execute-src-block (around load-language nil activate)
-     "Load language if needed"
-     (let ((language (org-element-property :language (org-element-at-point))))
-       (unless (cdr (assoc (intern language) org-babel-load-languages))
-	 (add-to-list 'org-babel-load-languages (cons (intern language) t))
-	 (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
-       ad-do-it))
+(defadvice org-babel-execute-src-block (around load-language nil activate)
+  "Load language if needed"
+  (let ((language (org-element-property :language (org-element-at-point))))
+    (unless (cdr (assoc (intern language) org-babel-load-languages))
+	    (add-to-list 'org-babel-load-languages (cons (intern language) t))
+	    (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+    ad-do-it))
 
-  (setq org-confirm-babel-evaluate nil)
+(setq org-confirm-babel-evaluate nil)
 
-   (setq org-src-fontify-natively t
-	 org-src-tab-acts-natively t
-	 org-src-preserve-indentation t
-	 org-src-window-setup 'current-window)
+(setq org-src-fontify-natively t
+	    org-src-tab-acts-natively t
+	    org-src-preserve-indentation t
+	    org-src-window-setup 'current-window)
 
-   (setq org-confirm-babel-evaluate nil)
-   (setq org-babel-results-keyword "results")
+(setq org-confirm-babel-evaluate nil)
+(setq org-babel-results-keyword "results")
 
- (defun as/display-inline-images ()
-     (condition-case nil
-	 (org-display-inline-images)
-       (error nil)))
+(defun as/display-inline-images ()
+  (condition-case nil
+	    (org-display-inline-images)
+    (error nil)))
 
-   (add-hook 'org-babel-after-execute-hook 'as/display-inline-images 'append)
+(add-hook 'org-babel-after-execute-hook 'as/display-inline-images 'append)
 
 ;;;;; org-tag-alist
 (setq org-tag-alist (quote
@@ -328,17 +337,24 @@
                       ("NOTE" . ?n)
                       ("resilient" . ?r)
                       ("learning" . ?l)
-                      ("work" . ?w)
+                      ("sancocho" . ?s)
                       ("personal" . ?p)
                       )))
 
-   (setq org-fast-tag-selection-include-todo t)
+(setq org-fast-tag-selection-include-todo t)
 (setq org-fast-tag-selection-single-key (quote expert))
+;;;;; org-column
+(setq org-columns-default-format
+      "%1PRIORITY %50ITEM %10AREA %50OUTCOME %6Effort(Effort){:} %6ENERGY %5CLOCKSUM %10DEADLINE")
+
+;;;;; global-properties
+(setq org-global-properties (quote (("Effort_ALL" . "0:05 0:10 0:15 0:25 0:45 1:00 1:30 2:00 3:00 4:00 5:00 6:00 0:00")
+				                            ("STYLE_ALL" . "habit"))))
 ;;;;; org-capture templates
 (require 'org-protocol)
 (require 'org-expiry)
 
-  (defun org-journal-find-location ()
+(defun org-journal-find-location ()
   (org-journal-new-entry t)
   (goto-char (point-min)))
 
@@ -392,39 +408,237 @@ See `org-capture-templates' for more information."
 
 
 ;;;; org-agenda
-(require 'ox-org)
+(after! org-agenda
+  (require 'ox-org)
 
-(setq org-time-stamp-rounding-minutes (quote (1 1)))
+  (setq org-archive-location (concat org-directory "archive/archive.org::datetree/** Completed Tasks"))
 
-(setq org-default-priority ?D)
-(setq org-agenda-follow-indirect t)
+  (setq org-time-stamp-rounding-minutes (quote (1 1)))
 
-(setq org-agenda-window-setup 'current-window)
-(setq org-agenda-dim-blocked-tasks t)
-(setq org-agenda-compact-blocks t)
+  (setq org-default-priority ?D)
+  (setq org-agenda-follow-indirect t)
 
-(setq org-agenda-restriction-lock-highlight-subtree nil)
+  (setq org-agenda-window-setup 'current-window)
+  (setq org-agenda-dim-blocked-tasks nil)
+  (setq org-agenda-compact-blocks t)
 
-(add-hook 'org-agenda-mode-hook
-	        '(lambda () (hl-line-mode 1))
-	        'append)
+  (setq org-agenda-restriction-lock-highlight-subtree nil)
 
-(setq org-agenda-tags-todo-honor-ignore-options t)
-(setq org-agenda-inhibit-startup t)
+  (add-hook 'org-agenda-mode-hook
+	          '(lambda () (hl-line-mode 1))
+	          'append)
 
-(setq org-agenda-log-mode-items (quote (closed state clock)))
-(setq org-agenda-text-search-extra-files (quote ("~/Sync/org/notes/")))
-(setq org-agenda-show-all-dates t)
-(setq org-agenda-start-on-weekday nil)
+  (setq org-agenda-tags-todo-honor-ignore-options t)
+  (setq org-agenda-inhibit-startup t)
 
-(setq org-agenda-tags-column -100
-	    org-agenda-start-with-log-mode nil)
+  (setq org-agenda-log-mode-items (quote (closed state clock)))
+  (setq org-agenda-text-search-extra-files (quote ("~/Sync/org/notes/")))
+  (setq org-agenda-show-all-dates t)
+  (setq org-agenda-start-on-weekday nil)
 
-(setq org-agenda-entry-text-maxlines 20)
-(setq org-agenda-entry-text-leaders " ")
-(setq org-agenda-timegrid-use-ampm t)
-(setq org-agenda-include-diary nil)
-(setq org-agenda-insert-diary-extract-time t)
-(setq org-log-done t)
-(setq org-agenda-span 'day)
-(setq org-agenda-start-day nil)
+  (setq org-agenda-tags-column -100
+	      org-agenda-start-with-log-mode nil)
+
+  (setq org-agenda-entry-text-maxlines 20)
+  (setq org-agenda-entry-text-leaders " ")
+  (setq org-agenda-timegrid-use-ampm t)
+  (setq org-agenda-include-diary nil)
+  (setq org-agenda-insert-diary-extract-time t)
+  (setq org-log-done t)
+  (setq org-agenda-span 'day)
+  (setq org-agenda-start-day nil)
+
+;;;; org-super-agenda
+  (org-super-agenda-mode t)
+  (setq org-agenda-time-grid '((daily today require-timed) nil)
+        org-agenda-skip-scheduled-if-done t
+        org-agenda-skip-deadline-if-done t
+        org-agenda-include-deadlines t
+        org-agenda-include-diary t
+        org-agenda-block-separator nil
+        org-agenda-compact-blocks t
+        org-agenda-start-with-log-mode t)
+
+
+  (setq org-agenda-custom-commands
+	      '(
+          ("i" "Inbox" tags "REFILE"
+           ((org-agenda-overriding-header "Inbox")
+            (org-tags-match-list-sublevels t)))
+
+          ("a" "Overview"
+	         ((agenda "" ((org-agenda-span 1)
+			                  (org-super-agenda-groups
+			                   '((:name "Habit"
+				                          :habit t
+                                  :order 2)
+
+			                     (:name "Schedule"
+				                          :time-grid t
+				                          :scheduled t
+				                          :order 1)
+			                     (:discard (:anything t))))))
+
+	          (alltodo "" ((org-agenda-overriding-header "In-Progress")
+			                   (org-super-agenda-groups
+			                    '((:name none
+				                           :discard (:not (:todo ("IN-PROGRESS")))
+				                           :discard (:habit)
+				                           :order 6)
+			                      (:name none
+				                           :todo t
+				                           :face (:background "blue" :underline t))
+			                      ))))
+
+            (alltodo "" ((org-agenda-overriding-header "Next Task")
+			                   (org-super-agenda-groups
+			                    '((:name none
+				                           :discard (:not (:todo "NEXT"))
+				                           :discard (:habit)
+				                           :order 5)
+			                      (:name none
+				                           :todo "NEXT"
+				                           :face (:background "" :underline t))))))
+
+
+            (alltodo "" ((org-agenda-overriding-header "Stuck Project")
+			                   (org-super-agenda-groups
+			                    '((:name none
+				                           :discard (:children "NEXT")
+				                           :order 4)
+			                      (:name none
+				                           :discard (:children nil)
+				                           :order 4)
+			                      (:name none
+				                           :children todo)))))
+
+
+            (alltodo "" ((org-agenda-overriding-header "Active Project")
+			                   (org-super-agenda-groups
+			                    '((:name none
+				                           :children "NEXT"
+				                           :order 1)
+			                      (:discard (:anything t))))))
+
+	          (alltodo "" ((org-agenda-overriding-header "Project Task")
+			                   (org-agenda-skip-function 'bh/skip-non-project-tasks)
+			                   (org-super-agenda-groups
+			                    '((:name none
+                                   :discard (:tag "HOLD")
+				                           :todo t
+				                           :order 5)))))
+
+	          (alltodo "" ((org-agenda-overriding-header "Standalone Task")
+			                   (org-agenda-skip-function 'bh/skip-project-tasks)
+			                   (org-super-agenda-groups
+			                    '((:name none
+                                   :discard (:tag "REFILE")
+				                           :todo ("TODO" "WAITING" "HOLD")
+				                           :order 7)
+			                      (:discard (:anything t))))))
+            ))
+          ))
+
+  (defun bh/is-project-p ()
+    "Any task with a todo keyword subtask"
+    (save-restriction
+      (widen)
+      (let ((has-subtask)
+            (subtree-end (save-excursion (org-end-of-subtree t)))
+            (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+        (save-excursion
+          (forward-line 1)
+          (while (and (not has-subtask)
+                      (< (point) subtree-end)
+                      (re-search-forward "^\*+ " subtree-end t))
+            (when (member (org-get-todo-state) org-todo-keywords-1)
+              (setq has-subtask t))))
+        (and is-a-task has-subtask))))
+
+  (defun bh/find-project-task ()
+    "Move point to the parent (project) task if any"
+    (save-restriction
+      (widen)
+      (let ((parent-task (save-excursion (org-back-to-heading 'invisible-ok) (point))))
+        (while (org-up-heading-safe)
+          (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
+            (setq parent-task (point))))
+        (goto-char parent-task)
+        parent-task)))
+
+  (defun bh/skip-non-tasks ()
+    "Show non-project tasks.
+Skip project and sub-project tasks, habits, and project related tasks."
+    (save-restriction
+      (widen)
+      (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+        (cond
+         ((bh/is-task-p)
+          nil)
+         (t
+          next-headline)))))
+
+  (defun bh/skip-project-tasks ()
+    "Show non-project tasks.
+Skip project and sub-project tasks, habits, and project related tasks."
+    (save-restriction
+      (widen)
+      (let* ((subtree-end (save-excursion (org-end-of-subtree t))))
+        (cond
+         ((bh/is-project-p)
+          subtree-end)
+         ((org-is-habit-p)
+          subtree-end)
+         ((bh/is-project-subtree-p)
+          subtree-end)
+         (t
+          nil)))))
+
+  (defun bh/is-task-p ()
+    "Any task with a todo keyword and no subtask"
+    (save-restriction
+      (widen)
+      (let ((has-subtask)
+            (subtree-end (save-excursion (org-end-of-subtree t)))
+            (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+        (save-excursion
+          (forward-line 1)
+          (while (and (not has-subtask)
+                      (< (point) subtree-end)
+                      (re-search-forward "^\*+ " subtree-end t))
+            (when (member (org-get-todo-state) org-todo-keywords-1)
+              (setq has-subtask t))))
+        (and is-a-task (not has-subtask)))))
+
+  (defun bh/is-project-subtree-p ()
+    "Any task with a todo keyword that is in a project subtree.
+Callers of this function already widen the buffer view."
+    (let ((task (save-excursion (org-back-to-heading 'invisible-ok)
+                                (point))))
+      (save-excursion
+        (bh/find-project-task)
+        (if (equal (point) task)
+            nil
+          t))))
+
+
+  (defun bh/skip-non-project-tasks ()
+    "Show project tasks.
+Skip project and sub-project tasks, habits, and loose non-project tasks."
+    (save-restriction
+      (widen)
+      (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
+             (next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+        (cond
+         ((bh/is-project-p)
+          next-headline)
+         ((org-is-habit-p)
+          subtree-end)
+         ((and (bh/is-project-subtree-p)
+               (member (org-get-todo-state) (list "NEXT" "IN-PROGRESS")))
+          subtree-end)
+         ((not (bh/is-project-subtree-p))
+          subtree-end)
+         (t
+          nil)))))
+  )
