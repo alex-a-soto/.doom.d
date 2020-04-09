@@ -1,0 +1,16 @@
+* Morning Routine [0/9]
+- [ ] Drink water
+- [ ] Take multivitamin
+- [ ] Brush teeth
+- [ ] Shower
+- [ ] Get dressed
+- [ ] Make bed
+- [ ] Breakfast
+
+- [ ] Review calendar
+  - [ ] <progn (org-agenda nil "a")>
+  - [ ] <progn (browse-url "https://calendar.google.com/calendar/r")>
+  - [ ] <progn (browse-url "https://calendar.google.com/calendar/b/1/r")>
+
+- [ ] Review agenda
+<progn (org-agenda nil "o")>

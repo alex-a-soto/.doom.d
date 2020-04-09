@@ -78,6 +78,7 @@
 ;;; hyperbole
 (package! hyperbole
   :recipe (:type git :host github :repo "rswgnu/hyperbole"))
+
 ;;; notdeft
 (package! notdeft
   :recipe (:type git :host github :repo "hasu/notdeft"))
@@ -85,3 +86,4 @@
 ;;; org-web-tools
 (package! org-web-tools)
 (package! org-journal)
+(package! graphql-mode)

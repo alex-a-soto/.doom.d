@@ -1,0 +1,16 @@
+* %^{Project name}
+DEADLINE: %^t
+:PROPERTIES:
+:STARTDATE: %u
+:END:
+%^{OUTCOME}p
+%^{AREA}p
+%?
+- [ ] Add project tags for context (e.g. work, personal)
+    <org-set-tags-command>
+- [ ] List specific tasks
+- [ ] Schedule next actions from generated tasks
+- [ ] Create a folders in Projects and Resources
+  <progn (mkdir (concat "~/Sync/Projects/" (nth 4 (org-heading-components))))
+  (mkdir (concat "~/Sync/Resources/" (nth 4 (org-heading-components))))
+  (message "Folder created in Projects")>

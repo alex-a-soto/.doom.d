@@ -1,0 +1,4 @@
+* Evening Routine
+:PROPERTIES:
+:SORT:     TYPE
+:END:

@@ -49,9 +49,12 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 
-(setq org-directory "~/Sync/org/")
+(setq org-directory "~/Sync/")
+(setq org-calendar-file (concat org-directory "calendar.org"))
 (setq org-inbox-file (concat org-directory "inbox.org"))
+(setq org-projects-file (concat org-directory "projects.org"))
 (setq org-journal-file (concat org-directory "journal.org"))
+(setq org-someday-file (concat org-directory "someday.org"))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -99,7 +102,7 @@
 (map! :leader
       :prefix "w"
       :map winner-mode-map
-      :desc "Toggle Window" "SPC" #'as/toggle-one-window)
+      :desc "Toggle Window" "TAB" #'as/toggle-one-window)
 
 ;;;; Fold
 (map! :leader
@@ -190,9 +193,11 @@
   (add-hook 'org-export-before-processing-hook 'my/org-export-preprocessor))
 
 ;;;; Hyperbole
-(eval-after-load "hyperbole"
-  '(progn
-     (define-key org-mode-map (kbd "<M-return>") nil)))
+(use-package! hyperbole
+  :custom
+  (hyperb:init)
+  :config
+  (define-key org-mode-map (kbd "<M-return>") nil))
 
 ;;;; Notdeft
 
@@ -229,7 +234,7 @@
 (after! notdeft
   (load "notdeft-example")
   (setq notdeft-xapian-program "/home/alexander/bin/Notdeft/notdeft-xapian")
-  (setq notdeft-directories '("/home/alexander/Sync/org/notes"))
+  (setq notdeft-directories '("/home/alexander/Sync/Resources"))
   (setq notdeft-time-format " %Y-%m-%d-%H%M")
   (setq notdeft-template
         "#+TITLE:
@@ -361,30 +366,36 @@
 (add-hook 'org-capture-mode-hook (lambda () (call-interactively 'org-store-link)))
 
 (setq org-capture-templates
-	    (quote (
-              ("t" "Task" entry (file org-inbox-file) (function as/quick-capture))
-              ("e" "Event" entry (file org-inbox-file ) "* %^{Event} %^g \n%^{When?}t\n")
-		          ("n" "Note" entry (file org-inbox-file ) "* %^{Note} :NOTE: \n %T \n %?")
+	    (quote
+       (("t" "Task" entry (file org-inbox-file) (function as/quick-capture))
+        ("p" "Project" entry (file org-projects-file) (file "~/.doom.d/templates/new-project.org"))
+        ("e" "Event" entry (file org-inbox-file ) "* %^{Event} %^g \n%^{When?}t\n")
 
-		          ("j" "Journal")
+        ("n" "Note")
+		    ("nn" "Note" entry (file org-inbox-file ) "* %^{Note} :NOTE: \n %T \n %?")
+        ("ns" "Selection --> Note" entry (file org-inbox-file ) "* %^{Title} :NOTE: %^g \nSource: %u, [[%F][%f]]\n\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n%?")
+        ("nt" "Selection --> Todo" entry (file org-inbox-file ) "* TODO %^{Title} %^g \nSource: %u, [[%F][%f]]\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n%?")
 
-              ("j" "Journal")
-		          ("jj" "Journal" entry (file+olp+datetree org-journal-file) "* Journal - %^{Title} %^g \n %T \n\n  %?")
-		          ("jp" "Problem" entry (file+olp+datetree org-journal-file) "* Problem - %^{Domain} %^g \n %T \n\n *Problem:* %?\n\n *Insight:*\n\n *Tomorrow:*\n\n")
-		          ("jc" "Code" entry    (file+olp+datetree org-journal-file) "* Code - %^{Title} %^g \n %T \n\n#+BEGIN_SRC\n%i\n#+END_SRC\n\n%?")
-		          ("jf" "Focus Block" entry (file+olp+datetree org-journal-file) "* Focus - %^{Focus:} %^g \n %T \n\n %?")
-		          ("jr" "Recovery Block" entry (file+olp+datetree org-journal-file) "* Recovery - %^{Recovery:} %^g \n %T \n\n %?")
-		          ("ja" "Admin Block" entry (file+olp+datetree org-journal-file) "* Admin - %^{Admin:} %^g \n %T \n\n %?")
-              ("ji" "Interrupt" entry (file+olp+datetree org-journal-file) "* Interrupt - %? \n %T :interrupt: \n\n")
+        ("j" "Journal")
+		    ("jj" "Journal" entry (file+olp+datetree org-journal-file) "* Journal - %^{Title} %^g \n %T \n\n  %?")
+		    ("jp" "Problem" entry (file+olp+datetree org-journal-file) "* Problem - %^{Domain} %^g \n %T \n\n *Problem:* %?\n\n *Insight:*\n\n *Tomorrow:*\n\n")
+		    ("jc" "Code" entry    (file+olp+datetree org-journal-file) "* Code - %^{Title} %^g \n %T \n\n#+BEGIN_SRC\n%i\n#+END_SRC\n\n%?")
 
+		    ("jf" "Focus Block" entry (file+olp+datetree org-journal-file) "* Focus - %^{Focus:} %^g \n %T \n\n %?")
+		    ("jr" "Recovery Block" entry (file+olp+datetree org-journal-file) "* Recovery - %^{Recovery:} %^g \n %T \n\n %?")
+		    ("ja" "Admin Block" entry (file+olp+datetree org-journal-file) "* Admin - %^{Admin:} %^g \n %T \n\n %?")
+        ("ji" "Interruption" entry (file+olp+datetree org-journal-file) "* Interrupt - %? \n %T :interrupt: \n\n")
 
-              ("s" "Selection")
-              ("sn" "Selection --> Note" entry (file org-inbox-file ) "* %^{Title} :NOTE: %^g \nSource: %u, [[%F][%f]]\n\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n%?")
-              ("st" "Selection --> Todo" entry (file org-inbox-file ) "* TODO %^{Title} %^g \nSource: %u, [[%F][%f]]\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n%?")
+        ("o" "Routines")
+        ("om" "Morning" entry (file+olp+datetree "/tmp/routines.org") (file "~/.doom.d/templates/morning-routine.org"))
+        ("oe" "Evening" entry (file+olp+datetree "/tmp/routines.org") (file "~/.doom.d/templates/evening-routine.org"))
+        ("on" "Night" entry (file+olp+datetree "/tmp/routines.org") (file "~/.doom.d/templates/night-routine.org"))
 
-
-
-              )))
+        ("r" "Review")
+        ("rd" "Daily" entry (file+olp+datetree "/tmp/reviews.org") (file "~/.doom.d/templates/daily-review.org"))
+        ("rw" "Weekly" entry (file+olp+datetree "/tmp/reviews.org") (file "~/.doom.d/templates/weekly-review.org"))
+        ("rm" "Monthly" entry (file+olp+datetree "/tmp/reviews.org") (file "~/.doom.d/templates/monthly-review.org"))
+        ("ra" "Annual" entry (file+olp+datetree "/tmp/reviews.org") (file "~/.doom.d/templates/annual-review.org")))))
 
 (defun as/quick-capture-status ()
   "Create and return a TODO heading template"
@@ -398,8 +409,6 @@
       (buffer-string))))
 
 (defun as/quick-capture ()
-  "Returns `org-capture' template string for new Hugo post.
-See `org-capture-templates' for more information."
   (mapconcat #'identity
              `(
                ,(as/quick-capture-status)
@@ -411,7 +420,7 @@ See `org-capture-templates' for more information."
 (after! org-agenda
   (require 'ox-org)
 
-  (setq org-archive-location (concat org-directory "archive/archive.org::datetree/** Completed Tasks"))
+  (setq org-archive-location (concat org-directory "Archive/archive.org::datetree/"))
 
   (setq org-time-stamp-rounding-minutes (quote (1 1)))
 
@@ -466,7 +475,7 @@ See `org-capture-templates' for more information."
            ((org-agenda-overriding-header "Inbox")
             (org-tags-match-list-sublevels t)))
 
-          ("a" "Overview"
+          ("o" "Overview"
 	         ((agenda "" ((org-agenda-span 1)
 			                  (org-super-agenda-groups
 			                   '((:name "Habit"
@@ -487,7 +496,7 @@ See `org-capture-templates' for more information."
 				                           :order 6)
 			                      (:name none
 				                           :todo t
-				                           :face (:background "blue" :underline t))
+				                           :face (:underline t))
 			                      ))))
 
             (alltodo "" ((org-agenda-overriding-header "Next Task")
@@ -642,3 +651,54 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
          (t
           nil)))))
   )
+
+;;;; avy
+(map! :leader
+      :prefix "s"
+      :desc "Jump to word" "w" #'avy-goto-word-0)
+
+(defun my-org-agenda-recent-open-loops ()
+  (interactive)
+  (let ((org-agenda-start-with-log-mode t)
+        (org-agenda-use-time-grid nil))
+    (org-agenda-list nil (org-read-date nil nil "-2d") 4)))
+
+(defun my-org-agenda-longer-open-loops ()
+  (interactive)
+  (let ((org-agenda-start-with-log-mode t)
+        (org-agenda-use-time-grid nil))
+    (org-agenda-list 'file (org-read-date nil nil "-14d") 28)))
+
+
+  (setq organization-task-id "0f1cf581-cd20-4acd-bf70-e2174635579c")
+
+
+  (defun as/punch-in (arg)
+    (interactive "p")
+    (setq as/keep-clock-running t)
+    (if (equal major-mode 'org-agenda-mode)
+        (let* ((marker (org-get-at-bol 'org-hd-marker))
+               (tags (org-with-point-at marker (org-get-tags-at))))
+          (if (and (eq arg 4) tags)
+              (org-agenda-clock-in '(16))
+            (as/clock-in-organization-task-as-default)))
+      (save-restriction
+        (widen)
+        (if (and (equal major-mode 'org-mode) (not (org-before-first-heading-p)) (eq arg 4))
+            (org-clock-in '(16))
+          (as/clock-in-organization-task-as-default)))))
+
+  (defun as/clock-in-organization-task-as-default ()
+    (interactive)
+    (org-with-point-at (org-id-find organization-task-id 'marker)
+      (org-clock-in '(16))))
+
+  (defun as/punch-out ()
+    (interactive)
+    (setq as/keep-clock-running nil)
+    (when (org-clock-is-active)
+      (org-clock-out))
+    (org-agenda-remove-restriction-lock))
+
+
+(find-file "~/.hyperb/HYPB")
