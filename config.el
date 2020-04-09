@@ -50,11 +50,9 @@
 ;; change `org-directory'. It must be set before org loads!
 
 (setq org-directory "~/Sync/")
-(setq org-calendar-file (concat org-directory "calendar.org"))
-(setq org-inbox-file (concat org-directory "inbox.org"))
-(setq org-projects-file (concat org-directory "projects.org"))
+(setq org-gtd-file (concat org-directory "gtd.org"))
 (setq org-journal-file (concat org-directory "journal.org"))
-(setq org-someday-file (concat org-directory "someday.org"))
+
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -117,6 +115,21 @@
 ;;;; Enable narrow functions
 (put 'narrow-to-page 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
+;;;; dired
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (define-key dired-mode-map
+              (kbd "C-c C-x a")
+              #'org-attach-dired-to-subtree)))
+
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (define-key dired-mode-map (kbd "C-c C-x c")
+              (lambda ()
+                (interactive)
+                (let ((org-attach-method 'cp))
+                  (call-interactively #'org-attach-dired-to-subtree))))))
+
 ;;; Packages
 ;;;; Which Key
 (use-package! which-key
@@ -367,14 +380,14 @@
 
 (setq org-capture-templates
 	    (quote
-       (("t" "Task" entry (file org-inbox-file) (function as/quick-capture))
-        ("p" "Project" entry (file org-projects-file) (file "~/.doom.d/templates/new-project.org"))
-        ("e" "Event" entry (file org-inbox-file ) "* %^{Event} %^g \n%^{When?}t\n")
+       (("t" "Task" entry (file+headline org-gtd-file "Inbox") (function as/quick-capture))
+        ("p" "Project" entry (file+headline org-projects-file "Projects") (file "~/.doom.d/templates/new-project.org"))
+        ("e" "Event" entry (file+headline org-gtd-file "Inbox" ) "* %^{Event} %^g \n%^{When?}t\n")
 
         ("n" "Note")
-		    ("nn" "Note" entry (file org-inbox-file ) "* %^{Note} :NOTE: \n %T \n %?")
-        ("ns" "Selection --> Note" entry (file org-inbox-file ) "* %^{Title} :NOTE: %^g \nSource: %u, [[%F][%f]]\n\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n%?")
-        ("nt" "Selection --> Todo" entry (file org-inbox-file ) "* TODO %^{Title} %^g \nSource: %u, [[%F][%f]]\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n%?")
+		    ("nn" "Note" entry (file+headline org-gtd-file "Inbox" ) "* %^{Note} :NOTE: \n %T \n %?")
+        ("ns" "Selection --> Note" entry (file+headline org-gtd-file "Inbox" ) "* %^{Title} :NOTE: %^g \nSource: %u, [[%F][%f]]\n\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n%?")
+        ("nt" "Selection --> Todo" entry (file+headline org-gtd-file "Inbox" ) "* TODO %^{Title} %^g \nSource: %u, [[%F][%f]]\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n%?")
 
         ("j" "Journal")
 		    ("jj" "Journal" entry (file+olp+datetree org-journal-file) "* Journal - %^{Title} %^g \n %T \n\n  %?")
@@ -420,7 +433,7 @@
 (after! org-agenda
   (require 'ox-org)
 
-  (setq org-archive-location (concat org-directory "Archive/archive.org::datetree/"))
+  (setq org-archive-location (concat org-directory "Archive/b1/d4b05f-f7df-43e2-8434-627cced58bb0/archive.org::datetree/"))
 
   (setq org-time-stamp-rounding-minutes (quote (1 1)))
 
@@ -457,6 +470,50 @@
   (setq org-agenda-span 'day)
   (setq org-agenda-start-day nil)
 
+  (defun my-org-agenda-recent-open-loops ()
+  (interactive)
+  (let ((org-agenda-start-with-log-mode t)
+        (org-agenda-use-time-grid nil))
+    (org-agenda-list nil (org-read-date nil nil "-2d") 4)))
+
+(defun my-org-agenda-longer-open-loops ()
+  (interactive)
+  (let ((org-agenda-start-with-log-mode t)
+        (org-agenda-use-time-grid nil))
+    (org-agenda-list 'file (org-read-date nil nil "-14d") 28)))
+
+
+  (setq organization-task-id "0f1cf581-cd20-4acd-bf70-e2174635579c")
+
+
+  (defun as/punch-in (arg)
+    (interactive "p")
+    (setq as/keep-clock-running t)
+    (if (equal major-mode 'org-agenda-mode)
+        (let* ((marker (org-get-at-bol 'org-hd-marker))
+               (tags (org-with-point-at marker (org-get-tags-at))))
+          (if (and (eq arg 4) tags)
+              (org-agenda-clock-in '(16))
+            (as/clock-in-organization-task-as-default)))
+      (save-restriction
+        (widen)
+        (if (and (equal major-mode 'org-mode) (not (org-before-first-heading-p)) (eq arg 4))
+            (org-clock-in '(16))
+          (as/clock-in-organization-task-as-default)))))
+
+  (defun as/clock-in-organization-task-as-default ()
+    (interactive)
+    (org-with-point-at (org-id-find organization-task-id 'marker)
+      (org-clock-in '(16))))
+
+  (defun as/punch-out ()
+    (interactive)
+    (setq as/keep-clock-running nil)
+    (when (org-clock-is-active)
+      (org-clock-out))
+    (org-agenda-remove-restriction-lock))
+
+
 ;;;; org-super-agenda
   (org-super-agenda-mode t)
   (setq org-agenda-time-grid '((daily today require-timed) nil)
@@ -478,7 +535,7 @@
           ("o" "Overview"
 	         ((agenda "" ((org-agenda-span 1)
 			                  (org-super-agenda-groups
-			                   '((:name "Habit"
+			                   '((:name "Habits"
 				                          :habit t
                                   :order 2)
 
@@ -652,53 +709,36 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
           nil)))))
   )
 
+;;;; org-attach
+(setq org-attach-directory (concat org-directory "Archive"))
+(setq org-attach-method 'mv)
+
+(defun as/add-to-archive-windows ()
+  (interactive)
+  (find-file "~/Sync/gtd.org")
+  (dired-other-window "~/Inbox"))
+
+(defun as/add-to-archive ()
+  (interactive)
+  (dired-mark nil)
+  (dired-copy-filename-as-kill '(4))
+  (other-window 1 nil)
+  (goto-char (point-min))
+  (re-search-forward "* Archive")
+  (end-of-line)
+  (org-insert-heading-respect-content nil)
+  (yank)
+  (org-id-get-create)
+  (other-window 1 nil)
+  (call-interactively 'org-attach-dired-to-subtree)
+  )
+
 ;;;; avy
 (map! :leader
       :prefix "s"
       :desc "Jump to word" "w" #'avy-goto-word-0)
 
-(defun my-org-agenda-recent-open-loops ()
-  (interactive)
-  (let ((org-agenda-start-with-log-mode t)
-        (org-agenda-use-time-grid nil))
-    (org-agenda-list nil (org-read-date nil nil "-2d") 4)))
-
-(defun my-org-agenda-longer-open-loops ()
-  (interactive)
-  (let ((org-agenda-start-with-log-mode t)
-        (org-agenda-use-time-grid nil))
-    (org-agenda-list 'file (org-read-date nil nil "-14d") 28)))
 
 
-  (setq organization-task-id "0f1cf581-cd20-4acd-bf70-e2174635579c")
-
-
-  (defun as/punch-in (arg)
-    (interactive "p")
-    (setq as/keep-clock-running t)
-    (if (equal major-mode 'org-agenda-mode)
-        (let* ((marker (org-get-at-bol 'org-hd-marker))
-               (tags (org-with-point-at marker (org-get-tags-at))))
-          (if (and (eq arg 4) tags)
-              (org-agenda-clock-in '(16))
-            (as/clock-in-organization-task-as-default)))
-      (save-restriction
-        (widen)
-        (if (and (equal major-mode 'org-mode) (not (org-before-first-heading-p)) (eq arg 4))
-            (org-clock-in '(16))
-          (as/clock-in-organization-task-as-default)))))
-
-  (defun as/clock-in-organization-task-as-default ()
-    (interactive)
-    (org-with-point-at (org-id-find organization-task-id 'marker)
-      (org-clock-in '(16))))
-
-  (defun as/punch-out ()
-    (interactive)
-    (setq as/keep-clock-running nil)
-    (when (org-clock-is-active)
-      (org-clock-out))
-    (org-agenda-remove-restriction-lock))
-
-
+;;; Load Personal Button File
 (find-file "~/.hyperb/HYPB")
