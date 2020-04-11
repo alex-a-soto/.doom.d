@@ -49,9 +49,9 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 
-(setq org-directory "~/Sync/")
-(setq org-gtd-file (concat org-directory "gtd.org"))
-(setq org-journal-file (concat org-directory "journal.org"))
+(setq org-gtd-file "~/Projects/gtd.org")
+(setq org-inbox-file "~/Inbox/inbox.org")
+;(setq org-journal-file "~/journal.org")
 
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -158,10 +158,6 @@
  '(aw-leading-char-face
    ((t (:inherit ace-jump-face-foreground :height 3.0)))))
 
-;;;; org-now
-(after! org-now
-  (setq org-now-location (quote ("~/Sync/org/now/now.org"))))
-
 ;;;; org-roam
 (use-package! org-roam
   :commands (org-roam-insert org-roam-find-file org-roam-switch-to-buffer org-roam)
@@ -177,8 +173,8 @@
         :desc "org-roam-show-graph" "g" #'org-roam-show-graph
         :desc "org-roam-insert" "i" #'org-roam-insert)
 
-  (setq org-roam-directory "/home/alexander/Sync/org/notes/"
-        org-roam-db-location "/home/alexander/Sync/org/notes/org-roam.db"))
+  (setq org-roam-directory "/home/alexander/Archive/archive.org"
+        org-roam-db-location "/home/alexander/Archive/org-roam.db"))
 
 ;;;; company-org-roam
 (use-package company-org-roam
@@ -246,8 +242,8 @@
 
 (after! notdeft
   (load "notdeft-example")
-  (setq notdeft-xapian-program "/home/alexander/bin/Notdeft/notdeft-xapian")
-  (setq notdeft-directories '("/home/alexander/Sync/Resources"))
+  (setq notdeft-xapian-program "/home/alexander/.bin/Notdeft/notdeft-xapian")
+  (setq notdeft-directories '("/home/alexander/Archive"))
   (setq notdeft-time-format " %Y-%m-%d-%H%M")
   (setq notdeft-template
         "#+TITLE:
@@ -315,8 +311,12 @@
 (setq org-use-fast-todo-selection t)
 
 ;;;;; org-refile
+(setq org-id-locations-file "/home/alexander/.doom.d/.orgids")
+
 (setq org-refile-targets '((nil :maxlevel . 9)
-				                   (org-agenda-files :maxlevel . 9)))
+				                   (org-agenda-files :maxlevel . 4)
+                           ("~/Archive/archive.org" :maxlevel . 4)
+                           ))
 
 (setq org-refile-use-outline-path 'file)
 (setq org-outline-path-complete-in-steps nil)
@@ -363,7 +363,7 @@
 (setq org-fast-tag-selection-single-key (quote expert))
 ;;;;; org-column
 (setq org-columns-default-format
-      "%1PRIORITY %50ITEM %10AREA %50OUTCOME %6Effort(Effort){:} %6ENERGY %5CLOCKSUM %10DEADLINE")
+      "%1PRIORITY(P) %50ITEM(Task) %12ALLTAGS(Area) %50OUTCOME(Outcome) %6Effort(Effort){:} %6ENERGY(Energy) %5CLOCKSUM(Clock) %10DEADLINE(Deadline)")
 
 ;;;;; global-properties
 (setq org-global-properties (quote (("Effort_ALL" . "0:05 0:10 0:15 0:25 0:45 1:00 1:30 2:00 3:00 4:00 5:00 6:00 0:00")
@@ -380,14 +380,14 @@
 
 (setq org-capture-templates
 	    (quote
-       (("t" "Task" entry (file+headline org-gtd-file "Inbox") (function as/quick-capture))
-        ("p" "Project" entry (file+headline org-projects-file "Projects") (file "~/.doom.d/templates/new-project.org"))
-        ("e" "Event" entry (file+headline org-gtd-file "Inbox" ) "* %^{Event} %^g \n%^{When?}t\n")
+       (("t" "Task" entry (file org-inbox-file) (function as/quick-capture))
+        ("p" "Project" entry (file org-inbox-file) (file "~/.doom.d/templates/new-project.org"))
+        ("e" "Event" entry (file org-inbox-file) "* %^{Event} %^g \n%^{When?}t\n")
 
         ("n" "Note")
-		    ("nn" "Note" entry (file+headline org-gtd-file "Inbox" ) "* %^{Note} :NOTE: \n %T \n %?")
-        ("ns" "Selection --> Note" entry (file+headline org-gtd-file "Inbox" ) "* %^{Title} :NOTE: %^g \nSource: %u, [[%F][%f]]\n\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n%?")
-        ("nt" "Selection --> Todo" entry (file+headline org-gtd-file "Inbox" ) "* TODO %^{Title} %^g \nSource: %u, [[%F][%f]]\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n%?")
+		    ("nn" "Note" entry (file org-inbox-file ) "* %^{Note} :NOTE: \n %T \n %?")
+        ("ns" "Selection --> Note" entry (file org-inbox-file ) "* %^{Title} :NOTE: %^g \nSource: %u, [[%F][%f]]\n\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n%?")
+        ("nt" "Selection --> Todo" entry (file org-inbox-file ) "* TODO %^{Title} %^g \nSource: %u, [[%F][%f]]\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n%?")
 
         ("j" "Journal")
 		    ("jj" "Journal" entry (file+olp+datetree org-journal-file) "* Journal - %^{Title} %^g \n %T \n\n  %?")
@@ -433,7 +433,16 @@
 (after! org-agenda
   (require 'ox-org)
 
-  (setq org-archive-location (concat org-directory "Archive/b1/d4b05f-f7df-43e2-8434-627cced58bb0/archive.org::datetree/"))
+  (setq org-agenda-files (quote (
+                                 "~/Projects/gtd.org"
+                                 )))
+
+  (setq org-agenda-text-search-extra-files (quote (
+                                                   "~/Archive/archive.org"
+                                                   )))
+
+
+  (setq org-archive-location "/home/alexander/Archive/archive.org::datetree/")
 
   (setq org-time-stamp-rounding-minutes (quote (1 1)))
 
@@ -454,7 +463,6 @@
   (setq org-agenda-inhibit-startup t)
 
   (setq org-agenda-log-mode-items (quote (closed state clock)))
-  (setq org-agenda-text-search-extra-files (quote ("~/Sync/org/notes/")))
   (setq org-agenda-show-all-dates t)
   (setq org-agenda-start-on-weekday nil)
 
@@ -710,23 +718,24 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
   )
 
 ;;;; org-attach
-(setq org-attach-directory (concat org-directory "Archive"))
+(setq org-attach-directory  "~/Archive")
 (setq org-attach-method 'mv)
 
-(defun as/add-to-archive-windows ()
+(defun as/clear-inbox ()
   (interactive)
-  (find-file "~/Sync/gtd.org")
+  (find-file "~/Inbox/inbox.org")
   (dired-other-window "~/Inbox"))
 
-(defun as/add-to-archive ()
+(defun as/add-to-inbox ()
   (interactive)
   (dired-mark nil)
   (dired-copy-filename-as-kill '(4))
   (other-window 1 nil)
-  (goto-char (point-min))
-  (re-search-forward "* Archive")
+  (goto-char (point-max))
+  (newline-and-indent)
+;  (re-search-forward "* Inbox")
   (end-of-line)
-  (org-insert-heading-respect-content nil)
+  (call-interactively 'org-insert-heading-respect-content nil)
   (yank)
   (org-id-get-create)
   (other-window 1 nil)
@@ -734,10 +743,15 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
   )
 
 ;;;; avy
+
 (map! :leader
       :prefix "s"
       :desc "Jump to word" "w" #'avy-goto-word-0)
 
+
+;;;; Dired Plus
+
+;;;; Bookmark Plus
 
 
 ;;; Load Personal Button File

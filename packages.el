@@ -82,7 +82,19 @@
 ;;; notdeft
 (package! notdeft
   :recipe (:type git :host github :repo "hasu/notdeft"))
-;  :load-path "~/.emacs.d/straight/repos/notdeft/"
+
+;;; dired-plus
+(package! dired-plus
+  :recipe (:type git :host github :repo "emacsmirror/dired-plus"))
+
+;;; bookmark-plus
+(package! bookmark-plus
+  :recipe (:type git :host github :repo "emacsmirror/bookmark-plus"))
+
+(add-load-path! "~/.emacs.d/.local/straight/build/dired-plus")
+(add-load-path! "~/.emacs.d/.local/straight/build/bookmark-plus")
+
+
 ;;; org-web-tools
 (package! org-web-tools)
 (package! org-journal)
