@@ -91,11 +91,14 @@
 (package! bookmark-plus
   :recipe (:type git :host github :repo "emacsmirror/bookmark-plus"))
 
-(add-load-path! "~/.emacs.d/.local/straight/build/dired-plus")
-(add-load-path! "~/.emacs.d/.local/straight/build/bookmark-plus")
-
-
 ;;; org-web-tools
 (package! org-web-tools)
+
+;;; org-journal
 (package! org-journal)
+
+;;; graphql-mode
 (package! graphql-mode)
+
+;;; dired-hide-dotfiles
+(package! dired-hide-dotfiles)

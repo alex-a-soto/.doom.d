@@ -57,8 +57,8 @@
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 
-;;;; Display Luine Numbers
-(setq display-line-numbers-type t)
+;;;; Display Line Numbers
+(setq display-line-numbers-type nil)
 ;;;; Display time and battery
 (display-time-mode 1)
 (display-battery-mode 1)
@@ -173,7 +173,7 @@
         :desc "org-roam-show-graph" "g" #'org-roam-show-graph
         :desc "org-roam-insert" "i" #'org-roam-insert)
 
-  (setq org-roam-directory "/home/alexander/Archive/archive.org"
+  (setq org-roam-directory "/home/alexander/Archive"
         org-roam-db-location "/home/alexander/Archive/org-roam.db"))
 
 ;;;; company-org-roam
@@ -225,29 +225,24 @@
 
 (setq notdeft-notename-function 'notdeft-file-format)
 
+  (defun as/notdeft-new-file-named ()
+    (interactive)
+    (setq notdeft-directory "/home/alexander/Inbox")
+    (let ((title (read-string "New note: ")))
+      (notdeft-new-file-named nil title notdeft-template)
+      (goto-char (point-min))
+      (re-search-forward "^#\\+TITLE:.*$" nil t)
+      (insert " " title)
+      (re-search-forward "^#\\+DATE:.*$" nil t)
+      (insert (format-time-string " [%Y-%m-%d-%H%M]"))
+      (goto-char (point-min))
+      (goto-line 5)
+      ))
 
-(defun as/notdeft-new-file-named ()
-  (interactive)
-  (let ((title (read-string "New note: ")))
-    (notdeft-new-file-named nil title notdeft-template)
-    (goto-char (point-min))
-    (re-search-forward "^#\\+TITLE:.*$" nil t)
-    (insert " " title)
-    (re-search-forward "^#\\+DATE:.*$" nil t)
-    (insert (format-time-string " [%Y-%m-%d-%H%M]"))
-    (goto-char (point-min))
-    (goto-line 4)
-    ))
-
-
-(after! notdeft
-  (load "notdeft-example")
-  (setq notdeft-xapian-program "/home/alexander/.bin/Notdeft/notdeft-xapian")
-  (setq notdeft-directories '("/home/alexander/Archive"))
-  (setq notdeft-time-format " %Y-%m-%d-%H%M")
   (setq notdeft-template
         "#+TITLE:
 #+DATE:
+#+KEYWORDS:
 
 
 
@@ -255,10 +250,15 @@
 * External Links
 ")
 
-  )
+(after! notdeft
+  (load "notdeft-example")
+  (setq notdeft-xapian-program "/home/alexander/.bin/Notdeft/notdeft-xapian")
+  (setq notdeft-directories '("/home/alexander/Inbox" "/home/alexander/Archive"))
+  (setq notdeft-time-format " %Y-%m-%d-%H%M"))
+
 ;;;; pdf-tools
 ;;;; org
-(use-package org
+(use-package! org
   :config
   (setq org-replace-disputed-keys t)
 
@@ -316,6 +316,9 @@
 (setq org-refile-targets '((nil :maxlevel . 9)
 				                   (org-agenda-files :maxlevel . 4)
                            ("~/Archive/archive.org" :maxlevel . 4)
+                           ("~/Projects/resources.org" :maxlevel . 4)
+                           ("~/Inbox/inbox.org" :maxlevel . 4)
+                           ("~/Inbox/LGV20/mobile.org" :maxlevel . 4)
                            ))
 
 (setq org-refile-use-outline-path 'file)
@@ -439,6 +442,9 @@
 
   (setq org-agenda-text-search-extra-files (quote (
                                                    "~/Archive/archive.org"
+                                                   "~/Projects/resources.org"
+                                                   "~/Inbox/inbox.org"
+                                                   "~/Inbox/LGV20/mobile.org"
                                                    )))
 
 
@@ -733,7 +739,6 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
   (other-window 1 nil)
   (goto-char (point-max))
   (newline-and-indent)
-;  (re-search-forward "* Inbox")
   (end-of-line)
   (call-interactively 'org-insert-heading-respect-content nil)
   (yank)
@@ -748,11 +753,19 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
       :prefix "s"
       :desc "Jump to word" "w" #'avy-goto-word-0)
 
+(use-package! counsel
+  :config
+  (setq grep-command "rg -M 120 --with-filename --no-heading --line-number --color never %s")
+  :bind
+  ("C-s" . 'counsel-grep-or-swiper))
 
-;;;; Dired Plus
-
-;;;; Bookmark Plus
-
+;;; dired-hide-dotfiles
+  (use-package! dired-hide-dotfiles
+    :config
+    (define-key dired-mode-map "." #'dired-hide-dotfiles-mode)
+    (add-hook! 'dired-mode-hook 'as/dired-mode-hook)
+    (defun as/dired-mode-hook ()
+      (dired-hide-dotfiles-mode +1)))
 
 ;;; Load Personal Button File
 (find-file "~/.hyperb/HYPB")
