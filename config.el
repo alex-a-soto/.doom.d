@@ -402,10 +402,10 @@
 		    ("ja" "Admin Block" entry (file+olp+datetree org-journal-file) "* Admin - %^{Admin:} %^g \n %T \n\n %?")
         ("ji" "Interruption" entry (file+olp+datetree org-journal-file) "* Interrupt - %? \n %T :interrupt: \n\n")
 
-        ("o" "Routines")
-        ("om" "Morning" entry (file+olp+datetree "/tmp/routines.org") (file "~/.doom.d/templates/morning-routine.org"))
-        ("oe" "Evening" entry (file+olp+datetree "/tmp/routines.org") (file "~/.doom.d/templates/evening-routine.org"))
-        ("on" "Night" entry (file+olp+datetree "/tmp/routines.org") (file "~/.doom.d/templates/night-routine.org"))
+        ("m" "My Routines")
+        ("mm" "Morning" entry (file+olp+datetree "/tmp/routines.org") (file "~/.doom.d/templates/morning-routine.org"))
+        ("me" "Evening" entry (file+olp+datetree "/tmp/routines.org") (file "~/.doom.d/templates/evening-routine.org"))
+        ("mn" "Night" entry (file+olp+datetree "/tmp/routines.org") (file "~/.doom.d/templates/night-routine.org"))
 
         ("r" "Review")
         ("rd" "Daily" entry (file+olp+datetree "/tmp/reviews.org") (file "~/.doom.d/templates/daily-review.org"))
@@ -448,7 +448,7 @@
                                                    )))
 
 
-  (setq org-archive-location "/home/alexander/Archive/archive.org::datetree/")
+  (setq org-archive-location "/home/alexander/Archive/e5/1b5de9-8d7d-40e8-929c-a8a7f628db78/gtd_archive.org::datetree/")
 
   (setq org-time-stamp-rounding-minutes (quote (1 1)))
 
@@ -559,6 +559,25 @@
 				                          :order 1)
 			                     (:discard (:anything t))))))
 
+                        (alltodo "" ((org-agenda-overriding-header "Stuck Project")
+			                   (org-super-agenda-groups
+			                    '((:name none
+				                           :discard (:children "NEXT")
+				                           :order 4)
+			                      (:name none
+				                           :discard (:children nil)
+				                           :order 4)
+			                      (:name none
+				                           :children todo)))))
+
+
+                        (alltodo "" ((org-agenda-overriding-header "Active Project")
+			                   (org-super-agenda-groups
+			                    '((:name none
+				                           :children "NEXT"
+				                           :order 1)
+			                      (:discard (:anything t))))))
+
 	          (alltodo "" ((org-agenda-overriding-header "In-Progress")
 			                   (org-super-agenda-groups
 			                    '((:name none
@@ -579,26 +598,6 @@
 			                      (:name none
 				                           :todo "NEXT"
 				                           :face (:background "" :underline t))))))
-
-
-            (alltodo "" ((org-agenda-overriding-header "Stuck Project")
-			                   (org-super-agenda-groups
-			                    '((:name none
-				                           :discard (:children "NEXT")
-				                           :order 4)
-			                      (:name none
-				                           :discard (:children nil)
-				                           :order 4)
-			                      (:name none
-				                           :children todo)))))
-
-
-            (alltodo "" ((org-agenda-overriding-header "Active Project")
-			                   (org-super-agenda-groups
-			                    '((:name none
-				                           :children "NEXT"
-				                           :order 1)
-			                      (:discard (:anything t))))))
 
 	          (alltodo "" ((org-agenda-overriding-header "Project Task")
 			                   (org-agenda-skip-function 'bh/skip-non-project-tasks)
@@ -766,6 +765,20 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
     (add-hook! 'dired-mode-hook 'as/dired-mode-hook)
     (defun as/dired-mode-hook ()
       (dired-hide-dotfiles-mode +1)))
+
+;;; flycheck-ledger
+(use-package! flycheck-ledger
+  :demand t
+  :after (flycheck ledger-mode)
+  :init (progn
+          (add-hook 'ledger-mode-hook #'flycheck-mode)
+          (setq flycheck-ledger-zero-accounts '("Assets:Budget:Available"
+                                                "Assets:Budget:Unbudgeted"
+                                                "Assets:Expenses:InternalTransfer"))))
+
+(use-package! ledger
+  :init (progn
+          (add-hook 'ledger-mode-hook #'company-mode)))
 
 ;;; Load Personal Button File
 (find-file "~/.hyperb/HYPB")

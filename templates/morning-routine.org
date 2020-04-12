@@ -1,10 +1,10 @@
 * Morning Routine [0/9]
+- [ ] Make bed
 - [ ] Drink water
 - [ ] Take multivitamin
 - [ ] Brush teeth
 - [ ] Shower
 - [ ] Get dressed
-- [ ] Make bed
 - [ ] Breakfast
 
 - [ ] Review calendar

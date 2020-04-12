@@ -102,3 +102,6 @@
 
 ;;; dired-hide-dotfiles
 (package! dired-hide-dotfiles)
+
+;;; flyecheck-ledger
+(package! flycheck-ledger)
