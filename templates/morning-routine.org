@@ -1,16 +1,21 @@
 * Morning Routine [0/9]
 - [ ] Make bed
-- [ ] Drink water
 - [ ] Take multivitamin
+- [ ] Drink water
 - [ ] Brush teeth
 - [ ] Shower
 - [ ] Get dressed
 - [ ] Breakfast
 
 - [ ] Review calendar
-  - [ ] <progn (org-agenda nil "a")>
   - [ ] <progn (browse-url "https://calendar.google.com/calendar/r")>
   - [ ] <progn (browse-url "https://calendar.google.com/calendar/b/1/r")>
+  - [ ] <progn (org-agenda nil "a")>
 
 - [ ] Review agenda
 <progn (org-agenda nil "o")>
+
+- [ ] Identify Next Tasks and In-Progress tasks
+- [ ] Setup workspace for the day
+Weekday:
+ <progn (browse-url "https://calendar.google.com/calendar/b/1/r")>
