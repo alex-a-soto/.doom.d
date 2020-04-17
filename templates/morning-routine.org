@@ -12,10 +12,9 @@
   - [ ] <progn (browse-url "https://calendar.google.com/calendar/b/1/r")>
   - [ ] <progn (org-agenda nil "a")>
 
-- [ ] Review agenda
+- [ ] Identify Next Tasks and In-Progress tasks
 <progn (org-agenda nil "o")>
 
-- [ ] Identify Next Tasks and In-Progress tasks
 - [ ] Setup workspace for the day
 Weekday:
  <progn (browse-url "https://calendar.google.com/calendar/b/1/r")>

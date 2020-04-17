@@ -58,7 +58,7 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 
 ;;;; Display Line Numbers
-(setq display-line-numbers-type nil)
+(setq display-line-numbers-type t)
 ;;;; Display time and battery
 (display-time-mode 1)
 (display-battery-mode 1)
@@ -132,7 +132,7 @@
 
 ;;;; Workspaces
 (after! persp-mode
-  (setq persp-emacsclient-init-frame-behaviour-override "main"))
+  (setq persp-emacsclient-init-frame-behaviour-override "scratch"))
 
 ;;; Packages
 ;;;; Which Key
@@ -318,11 +318,11 @@
 (setq org-id-locations-file "/home/alexander/.doom.d/.orgids")
 
 (setq org-refile-targets '((nil :maxlevel . 9)
-				                   (org-agenda-files :maxlevel . 4)
-                           ("~/Archive/archive.org" :maxlevel . 4)
-                           ("~/Projects/resources.org" :maxlevel . 4)
-                           ("~/Inbox/inbox.org" :maxlevel . 4)
-                           ("~/Inbox/LGV20/mobile.org" :maxlevel . 4)
+				                   (org-agenda-files :maxlevel . 6)
+                           ("~/Archive/archive.org" :maxlevel . 6)
+                           ("~/Projects/resources.org" :maxlevel . 6)
+                           ("~/Inbox/inbox.org" :maxlevel . 6)
+                           ("~/Inbox/LGV20/mobile.org" :maxlevel . 6)
                            ))
 
 (setq org-refile-use-outline-path 'file)
