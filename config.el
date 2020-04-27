@@ -59,6 +59,8 @@
 
 ;;;; Display Line Numbers
 (setq display-line-numbers-type t)
+(setq display-line-numbers nil)
+
 ;;;; Display time and battery
 (display-time-mode 1)
 (display-battery-mode 1)
@@ -154,8 +156,8 @@
 ;;;; Company
 (after! company
   (setq company-echo-delay 0)
-  (setq company-idle-delay 0.1)
-  (setq company-minimum-prefix-length 2)
+  (setq company-idle-delay 0.5)
+  (setq company-minimum-prefix-length 3)
   (setq company-tooltip-limit 20))
 
 (custom-set-faces
@@ -319,8 +321,6 @@
 
 (setq org-refile-targets '((nil :maxlevel . 9)
 				                   (org-agenda-files :maxlevel . 6)
-                           ("~/Archive/archive.org" :maxlevel . 6)
-                           ("~/Projects/resources.org" :maxlevel . 6)
                            ("~/Inbox/inbox.org" :maxlevel . 6)
                            ("~/Inbox/LGV20/mobile.org" :maxlevel . 6)
                            ))
@@ -390,7 +390,8 @@
        (("t" "Task" entry (file org-inbox-file) (function as/quick-capture))
         ("p" "Project" entry (file org-inbox-file) (file "~/.doom.d/templates/new-project.org"))
         ("e" "Event" entry (file org-inbox-file) "* %^{Event} %^g \n%^{When?}t\n")
-		    ("n" "Note" entry (file org-inbox-file ) "* %^{Note} :NOTE: \n %T \n %?")
+		    ("n" "Note" entry (file org-inbox-file ) "* %^{Note} :NOTE: \n\n %?")
+        ("l" "Link" entry (file org-inbox-file ) "* %(org-cliplink-capture) \n\n %?")
 
         ("j" "Journal")
 		    ("jj" "Journal" entry (file+olp+datetree org-journal-file) "* Journal - %^{Title} %^g \n %T \n\n  %?")
@@ -442,8 +443,6 @@
                                  )))
 
   (setq org-agenda-text-search-extra-files (quote (
-                                                   "~/Archive/archive.org"
-                                                   "~/Projects/resources.org"
                                                    "~/Inbox/inbox.org"
                                                    "~/Inbox/LGV20/mobile.org"
                                                    )))
@@ -724,10 +723,10 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
   )
 
 ;;;; org-attach
-(setq org-attach-directory  "~/Archive")
+(setq org-attach-id-dir  "~/Archive")
 (setq org-attach-method 'mv)
 
-(defun as/clear-inbox ()
+(defun as/goto-inbox ()
   (interactive)
   (find-file "~/Inbox/inbox.org")
   (dired-other-window "~/Inbox"))
@@ -747,11 +746,20 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
   (call-interactively 'org-attach-dired-to-subtree)
   )
 
-;;;; avy
+;;;; Mapping avy with which-key
 
 (map! :leader
-      :prefix "s"
+      :prefix "j"
       :desc "Jump to word" "w" #'avy-goto-word-0)
+
+(map! :leader
+      :prefix "j"
+      :desc "Jump to char" "j" #'avy-goto-char)
+
+(map! :leader
+      :prefix "j"
+      :desc "Goto-line" "l" #'avy-goto-line)
+
 
 (use-package! counsel
   :config
@@ -776,6 +784,3 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
           (setq flycheck-ledger-zero-accounts '("Assets:Budget:Available"
                                                 "Assets:Budget:Unbudgeted"
                                                 "Assets:Expenses:InternalTransfer"))))
-
-;;; Load Personal Button File
-(find-file "~/.hyperb/HYPB")
