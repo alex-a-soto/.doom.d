@@ -1,5 +1,6 @@
 * Daily Review
 - [ ] Clear Physical Desktop / Inbox / Notebook
+<as/goto-inbox>
 
 - [ ] Clear Email Inboxes
   - [ ] <progn (browse-url "https://mail.google.com/mail/u/0/#inbox")>
@@ -7,22 +8,8 @@
 
 - [ ] Process streams as inboxes - record tasks, read it later, file notes
 <progn (browse-url "https://app.slack.com/client/T03SUKX53/unreads")>
-<progn (browse-url "https://app.slack.com/client/T03SUKX53/threads")>
-
-- [ ] Clear Downloads folder
-<dired "~/Downloads">
 
 - [ ] Capture any remaining open loops as tasks
 
-- [ ] Schedule + refile tasks in:
-     - [ ] Inbox
-     - [ ] Orgzly
-
-- [ ] Collect Calendar Open Loops (+/- 2  days)
-<my-org-agenda-recent-open-loops>
-
 - [ ] Schedule tomorrows's tasks (immersive -> process, deep -> shallow):
-<progn (org-agenda nil "a") (org-agenda-day-view)>
-
-- [ ] Clock out
-<progn (org-clock-out)>
+<progn (org-agenda nil "a")>

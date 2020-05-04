@@ -51,7 +51,6 @@
 
 (setq org-gtd-file "~/Projects/gtd.org")
 (setq org-inbox-file "~/Inbox/inbox.org")
-;(setq org-journal-file "~/journal.org")
 
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -59,7 +58,7 @@
 
 ;;;; Display Line Numbers
 (setq display-line-numbers-type t)
-(setq display-line-numbers nil)
+(setq display-line-numbers-mode nil)
 
 ;;;; Display time and battery
 (display-time-mode 1)
@@ -69,6 +68,7 @@
 (setq delete-by-moving-to-trash  t)
 
 ;;;; eww
+(setq browse-url-browser-function 'eww-browse-url) ; emacs browser
 (add-hook 'eww-after-render-hook 'eww-readable)
 (add-hook 'eww-after-render-hook 'writeroom-mode)
 (add-hook 'eww-after-render-hook 'visual-line-mode)
@@ -391,17 +391,25 @@
         ("p" "Project" entry (file org-inbox-file) (file "~/.doom.d/templates/new-project.org"))
         ("e" "Event" entry (file org-inbox-file) "* %^{Event} %^g \n%^{When?}t\n")
 		    ("n" "Note" entry (file org-inbox-file ) "* %^{Note} :NOTE: \n\n %?")
-        ("l" "Link" entry (file org-inbox-file ) "* %(org-cliplink-capture) \n\n %?")
+        ("l" "Link" entry (file org-inbox-file ) "* %(org-cliplink-capture) \n %?" :immediate-finish t)
+        ("s" "Selection --> Note" entry (file org-inbox-file ) "* %^{Title}  \nSource: %u, [[%F][%f]]\n\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n %?")
+
+
+        ("o" "Org-web tools")
+		    ("ow" "Capture Website" entry (file+olp "~/Sync/org/resources/library.org" ) (function as/capture-website) :immediate-finish t)
+        ("ox" "Capture local" entry (file+olp org-inbox-file ) (function org-web-tools-archive-attach) :immediate-finish t)
+		    ("ot" "Capture text" entry (file org-inbox-file) "* %^{Title} %:description \n:PROPERTIES:\n:DATE_ADDED: %u\n:SOURCE_URL: [[%:link][%:description]]\n:END:\n\n %i%?" :immediate-finish t)
+
 
         ("j" "Journal")
-		    ("jj" "Journal" entry (file+olp+datetree org-journal-file) "* Journal - %^{Title} %^g \n %T \n\n  %?")
-		    ("jp" "Problem" entry (file+olp+datetree org-journal-file) "* Problem - %^{Domain} %^g \n %T \n\n *Problem:* %?\n\n *Insight:*\n\n *Tomorrow:*\n\n")
-		    ("jc" "Code" entry    (file+olp+datetree org-journal-file) "* Code - %^{Title} %^g \n %T \n\n#+BEGIN_SRC\n%i\n#+END_SRC\n\n%?")
+		    ("jj" "Journal" entry (file+olp+datetree org-gtd-file) "* Journal - %^{Title} %^g \n %T \n\n  %?")
+		    ("jp" "Problem" entry (file+olp+datetree org-gtd-file) "* Problem - %^{Domain} %^g \n %T \n\n *Problem:* %?\n\n *Insight:*\n\n *Tomorrow:*\n\n")
+		    ("jc" "Code" entry    (file+olp+datetree org-gtd-file) "* Code - %^{Title} %^g \n %T \n\n#+BEGIN_SRC\n%i\n#+END_SRC\n\n%?")
 
-		    ("jf" "Focus Block" entry (file+olp+datetree org-journal-file) "* Focus - %^{Focus:} %^g \n %T \n\n %?")
-		    ("jr" "Recovery Block" entry (file+olp+datetree org-journal-file) "* Recovery - %^{Recovery:} %^g \n %T \n\n %?")
-		    ("ja" "Admin Block" entry (file+olp+datetree org-journal-file) "* Admin - %^{Admin:} %^g \n %T \n\n %?")
-        ("ji" "Interruption" entry (file+olp+datetree org-journal-file) "* Interrupt - %? \n %T :interrupt: \n\n")
+		    ("jf" "Focus Block" entry (file+olp+datetree org-gtd-file) "* Focus - %^{Focus:} %^g \n %T \n\n %?")
+		    ("jr" "Recovery Block" entry (file+olp+datetree org-gtd-file) "* Recovery - %^{Recovery:} %^g \n %T \n\n %?")
+		    ("ja" "Admin Block" entry (file+olp+datetree org-gtd-file) "* Admin - %^{Admin:} %^g \n %T \n\n %?")
+        ("ji" "Interruption" entry (file+olp+datetree org-gtd-file) "* Interrupt - %? \n %T :interrupt: \n\n")
 
         ("m" "My Routines")
         ("mm" "Morning" entry (file+olp+datetree "/tmp/routines.org") (file "~/.doom.d/templates/morning-routine.org"))
@@ -436,6 +444,8 @@
 ;;;; org-agenda
 (after! org-agenda
   (require 'ox-org)
+
+  (setq org-agenda-hide-tags-regexp "noexport\\|ATTACH")
 
   (setq org-agenda-files (quote (
                                  "~/Projects/gtd.org"
@@ -563,6 +573,7 @@
 			                   (org-super-agenda-groups
 			                    '((:name none
 				                           :discard (:children "NEXT")
+                                   :discard (:children "IN-PROGRESS")
 				                           :order 4)
 			                      (:name none
 				                           :discard (:children nil)
@@ -575,6 +586,7 @@
 			                   (org-super-agenda-groups
 			                    '((:name none
 				                           :children "NEXT"
+                                   :children "IN-PROGRESS"
 				                           :order 1)
 			                      (:discard (:anything t))))))
 
@@ -729,7 +741,9 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 (defun as/goto-inbox ()
   (interactive)
   (find-file "~/Inbox/inbox.org")
-  (dired-other-window "~/Inbox"))
+  (dired-other-window "~/Inbox")
+  (dired-hide-details-mode)
+  )
 
 (defun as/add-to-inbox ()
   (interactive)
@@ -784,3 +798,80 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
           (setq flycheck-ledger-zero-accounts '("Assets:Budget:Available"
                                                 "Assets:Budget:Unbudgeted"
                                                 "Assets:Expenses:InternalTransfer"))))
+
+;;; elfeed
+(after! elfeed
+
+  (setf url-queue-timeout 30)
+
+(elfeed-org)
+
+(setq rmh-elfeed-org-files (list "~/Archive/08/6e648e-2baf-4775-a0bc-8153ae99e505/rss.org"))
+
+(setq-default elfeed-search-filter "@12-hours-ago +unread")
+
+
+
+
+(defun as/elfeed-load-db-and-open ()
+"Wrapper to load the elfeed db from disk before opening"
+(interactive)
+(elfeed-db-load)
+(elfeed)
+(elfeed-update)
+(setq elfeed-search-filter "@1-hours-ago +unread")
+(elfeed-search-update--force))
+
+;;write to disk when quiting
+(defun as/elfeed-save-db-and-bury ()
+"Wrapper to save the elfeed db to disk before burying buffer"
+(interactive)
+(elfeed-db-save)
+(quit-window))
+
+(define-key elfeed-search-mode-map "q" 'as/elfeed-save-db-and-bury)
+(define-key elfeed-search-mode-map "h"
+  (lambda ()
+    (interactive)
+    (elfeed-search-set-filter (default-value 'elfeed-search-filter))))
+
+(define-key elfeed-search-mode-map (kbd "j") #'next-line)
+(define-key elfeed-search-mode-map (kbd "k") #'previous-line)
+
+(defun as/elfeed-yank-capture ()
+  (interactive)
+  (elfeed-search-yank)
+  (org-capture nil "l")
+  (message "Entry saved to Inbox"))
+
+(define-key elfeed-search-mode-map "y" #'as/elfeed-yank-capture)
+)
+
+;;; frame-font
+(setq my-font-name "DejaVu Sans Mono")
+(defcustom my-font-size 12 "My font size")
+
+(defun set-frame-font-size (&optional font-size)
+  "Change frame font size to FONT-SIZE.
+If no FONT-SIZE provided, reset the size to its default variable."
+  (let ((font-size
+     (or font-size
+       (car (get 'my-font-size 'standard-value)))))
+    (customize-set-variable 'my-font-size font-size)
+    (set-frame-font
+     (format "%s %d" my-font-name font-size) nil t)))
+
+(defun increase-frame-font ()
+  "Increase frame font by one."
+  (interactive)
+  (set-frame-font-size (+ my-font-size 1)))
+
+(defun decrease-frame-font ()
+  "Decrease frame font by one."
+  (interactive)
+  (set-frame-font-size (- my-font-size 1)))
+
+(defun reset-frame-font ()
+  "Reset frame font to its default value."
+  (interactive)
+  (set-frame-font-size))

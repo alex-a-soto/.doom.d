@@ -11,9 +11,8 @@
      - [ ] <progn (browse-url "https://mail.google.com/mail/u/0/#inbox")>
      - [ ] <progn (browse-url "https://mail.google.com/mail/u/1/#inbox")>
   - [ ] Browser Tabs
-
-  - [ ] Downloads Folder
-<progn (dired "~/Downloads/")>
+  - [ ] Inbox Folder
+<as/goto-inbox>
 
 - [ ] Empty Your Head: New projects, Tasks, Waiting For, Someday/Maybe?
 
@@ -22,7 +21,7 @@
 <progn (my-org-agenda-longer-open-loops)>
 
 - [ ] Review Action Lists:
-<progn (org-agenda "TODO" "T")>
+<progn (org-agenda nil "o")>
 
 - [ ] Review Waiting For List:
  <progn (org-agenda "WAITING" "T")>
@@ -36,10 +35,8 @@
 
 - [ ] Archive completed or inactive projects.
 - [ ] Update Budget
-<progn (browse-url "https://app.youneedabudget.com/")>
 
 - [ ] Review Any Relevant Checklists
 ** Get Creative [0/5]
 - [ ] Review Someday/Maybe list
 - [ ] Be Creative and Courageous: Are there any new, wonderful, harebrained, creative, thought-provoking, risk-taking ideas you can capture and add into your system, or “external brain”?
-- [ ] Clock out.
