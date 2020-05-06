@@ -105,3 +105,6 @@
 
 ;;; flyecheck-ledger
 (package! flycheck-ledger)
+
+(package! modalka)
+(package! org-gcal)
