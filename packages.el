@@ -63,13 +63,13 @@
   :recipe (:type git :host github
                  :repo "alphapapa/org-now"))
 ;;; org-roam
-(package! org-roam
-   :recipe (:type git :host github
-                  :repo "jethrokuan/org-roam"))
+;; (package! org-roam
+;;    :recipe (:type git :host github
+;;                   :repo "jethrokuan/org-roam"))
 
-(package! company-org-roam
-     :recipe (:type git :host github
-                  :repo "jethrokuan/company-org-roam"))
+;; (package! company-org-roam
+;;      :recipe (:type git :host github
+;;                   :repo "jethrokuan/company-org-roam"))
 
 ;;; org-super-agenda
 (package! org-super-agenda)
@@ -95,7 +95,7 @@
 (package! org-web-tools)
 
 ;;; org-journal
-(package! org-journal)
+;; (package! org-journal)
 
 ;;; graphql-mode
 (package! graphql-mode)
@@ -107,4 +107,12 @@
 (package! flycheck-ledger)
 
 (package! modalka)
-(package! org-gcal)
+
+;;; openwith
+(package! openwith)
+
+(package! treefactor)
+
+;;;org-gcal
+(package! org-gcal
+  :recipe (:type git :host github :repo "kidd/org-gcal.el"))

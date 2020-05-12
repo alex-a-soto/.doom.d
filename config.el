@@ -45,9 +45,14 @@
 
 (setq doom-theme 'doom-one)
 
+
 ;;;; Constants
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
+;;
+(setq user-home-directory
+  (expand-file-name "~/"))
+
 
 (setq org-gtd-file "~/Projects/gtd.org")
 (setq org-inbox-file "~/Inbox/inbox.org")
@@ -69,10 +74,11 @@
 (setq delete-by-moving-to-trash  t)
 
 ;;;; eww
-(setq browse-url-browser-function 'browse-url-default-browser) ; emacs browser
+;(setq browse-url-browser-function 'eww) ; emacs browser
 (add-hook 'eww-after-render-hook 'eww-readable)
 (add-hook 'eww-after-render-hook 'writeroom-mode)
 (add-hook 'eww-after-render-hook 'visual-line-mode)
+
 
 (setf org-agenda-bulk-custom-functions
       '((?n org-now-agenda-refile-to-now)
@@ -169,8 +175,8 @@
 ;;;; Company
 (after! company
   (setq company-echo-delay 0)
-  (setq company-idle-delay 0.5)
-  (setq company-minimum-prefix-length 3)
+  (setq company-idle-delay 0.2)
+  (setq company-minimum-prefix-length 2)
   (setq company-tooltip-limit 20))
 
 (custom-set-faces
@@ -179,21 +185,23 @@
 
 ;;;; org-roam
 (use-package! org-roam
-  :commands (org-roam-insert org-roam-find-file org-roam-switch-to-buffer org-roam)
-  :custom-face
-  (org-roam-link ((t (:inherit org-link :foreground "#005200"))))
+  ;; :hook
+  ;; (after-init . org-roam-mode)
+  ;; :custom-face
+  ;; (org-roam-link ((t (:inherit org-link :foreground "#005200"))))
   :init
-  (map! :leader
-        :prefix "n"
-        :desc "org-roam" "l" #'org-roam
-        :desc "org-roam-insert" "i" #'org-roam-insert
-        :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
-        :desc "org-roam-find-file" "f" #'org-roam-find-file
-        :desc "org-roam-show-graph" "g" #'org-roam-show-graph
-        :desc "org-roam-insert" "i" #'org-roam-insert)
+  ;; (map! :leader
+  ;;       :prefix "n"
+  ;;       :desc "org-roam" "l" #'org-roam
+  ;;       :desc "org-roam-insert" "i" #'org-roam-insert
+  ;;       :desc "org-roam-switch-to-buffer" "b" #'org-roam-switch-to-buffer
+  ;;       :desc "org-roam-find-file" "f" #'org-roam-find-file
+  ;;       :desc "org-roam-show-graph" "g" #'org-roam-show-graph
+  ;;       :desc "org-roam-insert" "i" #'org-roam-insert)
 
-  (setq org-roam-directory "/home/alexander/Archive"
-        org-roam-db-location "/home/alexander/Archive/org-roam.db"))
+  (setq org-roam-directory "/home/alexander/Projects/LearnInPublic/"
+        org-roam-db-location "/home/alexander/Projects/LearnInPublic/org-roam.db"
+        org-roam-graph-exclude-matcher "private"))
 
 ;;;; company-org-roam
 (use-package company-org-roam
@@ -209,8 +217,8 @@
                              (file-relative-name (car it) org-roam-directory)
                              (org-roam--get-title-or-slug (car it))))
          "" (org-roam-sql [:select [file-from]
-                                   :from file-link                             :where (= file-to $s1)
-                                   :and file-from :not :like $s2] file "%private%"))
+                           :from file-link                             :where (= file-to $s1)
+                           :and file-from :not :like $s2] file "%private%"))
       ""))
   (defun my/org-export-preprocessor (_backend)
     (let ((links (my/org-roam--backlinks-list (buffer-file-name))))
@@ -219,15 +227,16 @@
           (goto-char (point-max))
           (insert (concat "\n* Backlinks\n" links))))))
   (add-hook 'org-export-before-processing-hook 'my/org-export-preprocessor))
-
-;;;; Hyperbole
-(use-package! hyperbole
-  :custom
-  (hyperb:init)
-  :config
-  (define-key org-mode-map (kbd "<M-return>") nil))
+;;; def
+(setq deft-directory "/home/alexander/Inbox")
 
 ;;;; Notdeft
+(map! :leader
+      :prefix "n"
+      :desc "Open NotDeft" "d" #'notdeft
+      :desc "Create Note" "n" #'as/notdeft-new-file-named
+      :desc "#LearningInPublic" "p" #'as/LearnInPublic?)
+
 
 (defun notdeft-file-format (str)
   (when (string-match "^[^a-zA-Z0-9-]+" str)
@@ -240,26 +249,29 @@
     (setq str (replace-match "-" t t str)))
   (setq str (downcase str))
   (and (not (string= "" str))
-       (concat (format-time-string "%Y-%m-%d-%H%M") " " str)))
+       (concat (format-time-string "%Y-%m-%d-%H%M") "-" str)))
 
 (setq notdeft-notename-function 'notdeft-file-format)
 
-  (defun as/notdeft-new-file-named ()
-    (interactive)
-    (setq notdeft-directory "/home/alexander/Inbox")
-    (let ((title (read-string "New note: ")))
-      (notdeft-new-file-named nil title notdeft-template)
-      (goto-char (point-min))
-      (re-search-forward "^#\\+TITLE:.*$" nil t)
-      (insert " " title)
-      (re-search-forward "^#\\+DATE:.*$" nil t)
-      (insert (format-time-string " [%Y-%m-%d-%H%M]"))
-      (goto-char (point-min))
-      (goto-line 5)
-      ))
+(defun as/notdeft-new-file-named ()
+  (interactive)
+  (setq notdeft-directory "/home/alexander/Projects/LearnInPublic")
+  (let ((title (read-string "New note: ")))
+    (notdeft-new-file-named nil title notdeft-template)
+    (goto-char (point-min))
+    (re-search-forward "^#\\+TITLE:.*$" nil t)
+    (insert " " title)
+    (re-search-forward "^#\\+DATE:.*$" nil t)
+    (insert (format-time-string " [%Y-%m-%d-%H%M]"))
+    (goto-char (point-min))
+    (goto-line 5)
+    ))
 
-  (setq notdeft-template
-        "#+TITLE:
+
+(setq org-roam-capture-templates '(("d" "default" plain #'org-roam-capture--get-point "%?" :file-name "%<%Y%m%d%H%M%S>-${slug}" :head "#+TITLE: ${title}\n#+KEYWORDS:\n\n\n\n\n* Related\n* External Links" :unnarrowed t)))
+
+(setq notdeft-template
+      "#+TITLE:
 #+DATE:
 #+KEYWORDS:
 
@@ -272,14 +284,54 @@
 (after! notdeft
   (load "notdeft-example")
   (setq notdeft-xapian-program "/home/alexander/.bin/Notdeft/notdeft-xapian")
-  (setq notdeft-directories '("/home/alexander/Inbox" "/home/alexander/Archive"))
-  (setq notdeft-time-format " %Y-%m-%d-%H%M"))
+  (setq notdeft-directories '("/home/alexander/Inbox" "/home/alexander/Projects/LearnInPublic"))
+
+
+
+  (setq notdeft-time-format " %Y-%m-%d-%H%M")
+
+  (defun notdeft-new-file (pfx)
+    "Create a new file quickly.
+Create it with an automatically generated name, one based
+on the `notdeft-filter-string' filter string if it is non-nil.
+With a prefix argument PFX, offer a choice of NotDeft
+directories, when there is more than one of them.
+With two prefix arguments, also offer a choice of filename
+extensions when `notdeft-secondary-extensions' is non-empty.
+Return the filename of the created file."
+    (interactive "P")
+    (let ((data (and notdeft-filter-string))
+          (notename
+           (and notdeft-filter-string
+                (notdeft-title-to-notename notdeft-filter-string))))
+      (setq notdeft-template (concat
+                              "#+TITLE:" data
+                              "\n#+DATE:"
+                              "\n#+KEYWORDS:\n\n\n\n"
+
+
+                              "* Related\n"
+                              "* External Links"
+                              ))
+      (notdeft-sub-new-file notdeft-template notename pfx)
+      (goto-char (point-min))
+      (re-search-forward "^#\\+TITLE:.*$" nil t)
+      (re-search-forward "^#\\+DATE:.*$" nil t)
+      (insert (format-time-string " [%Y-%m-%d-%H%M]"))
+      (goto-char (point-min))
+      (goto-line 5)
+
+      )))
+
 
 ;;;; pdf-tools
 ;;;; org
 (use-package! org
   :config
   (setq org-replace-disputed-keys t)
+  (setq org-return-follows-link t)
+  (setq org-catch-invisible-edits 'show)
+
 
   (add-hook
    'org-mode-hook
@@ -396,6 +448,7 @@
   (org-journal-new-entry t)
   (goto-char (point-min)))
 
+
 (add-hook 'org-capture-mode-hook (lambda () (call-interactively 'org-store-link)))
 
 (setq org-capture-templates
@@ -415,14 +468,14 @@
 
 
         ("j" "Journal")
-		    ("jj" "Journal" entry (file+olp+datetree org-gtd-file) "* Journal - %^{Title} %^g \n %T \n\n  %?")
-		    ("jp" "Problem" entry (file+olp+datetree org-gtd-file) "* Problem - %^{Domain} %^g \n %T \n\n *Problem:* %?\n\n *Insight:*\n\n *Tomorrow:*\n\n")
-		    ("jc" "Code" entry    (file+olp+datetree org-gtd-file) "* Code - %^{Title} %^g \n %T \n\n#+BEGIN_SRC\n%i\n#+END_SRC\n\n%?")
+		    ("jj" "Journal" entry (function org-journal-find-location) "** %(format-time-string org-journal-time-format) Journal - %^{Title} %^g \n %T \n\n %?")
+		    ("jp" "Problem" entry (function org-journal-find-location) "** %(format-time-string org-journal-time-format) Problem - %^{Domain} %^g \n %T \n\n *Problem:* %?\n\n *Insight:*\n\n *Tomorrow:*\n\n")
+		    ("jc" "Code" entry    (function org-journal-find-location) "** %(format-time-string org-journal-time-format) Code - %^{Title} %^g \n %T \n\n#+BEGIN_SRC\n%i\n#+END_SRC\n\n%?")
 
-		    ("jf" "Focus Block" entry (file+olp+datetree org-gtd-file) "* Focus - %^{Focus:} %^g \n %T \n\n %?")
-		    ("jr" "Recovery Block" entry (file+olp+datetree org-gtd-file) "* Recovery - %^{Recovery:} %^g \n %T \n\n %?")
-		    ("ja" "Admin Block" entry (file+olp+datetree org-gtd-file) "* Admin - %^{Admin:} %^g \n %T \n\n %?")
-        ("ji" "Interruption" entry (file+olp+datetree org-gtd-file) "* Interrupt - %? \n %T :interrupt: \n\n")
+		    ("jf" "Focus Block" entry (function org-journal-find-location) "** %(format-time-string org-journal-time-format) Focus - %^{Focus:} %^g \n %T \n\n %?")
+		    ("jr" "Recovery Block" entry (function org-journal-find-location) "** %(format-time-string org-journal-time-format) Recovery - %^{Recovery:} %^g \n %T \n\n %?")
+		    ("ja" "Admin Block" entry (function org-journal-find-location) "** %(format-time-string org-journal-time-format) Admin - %^{Admin:} %^g \n %T \n\n %?")
+        ("ji" "Interruption" entry (function org-journal-find-location) "** %(format-time-string org-journal-time-format) Interrupt - %? \n %T :interrupt: \n\n")
 
         ("m" "My Routines")
         ("mm" "Morning" entry (file+olp+datetree "/tmp/routines.org") (file "~/.doom.d/templates/morning-routine.org"))
@@ -463,6 +516,7 @@
   (setq org-agenda-files (quote (
                                  "~/Projects/gtd.org"
                                  "~/Inbox/inbox.org"
+                                 "~/Projects/rc-gcal.org"
                                  )))
 
   (setq org-agenda-text-search-extra-files (quote (
@@ -508,16 +562,16 @@
   (setq org-agenda-start-day nil)
 
   (defun my-org-agenda-recent-open-loops ()
-  (interactive)
-  (let ((org-agenda-start-with-log-mode t)
-        (org-agenda-use-time-grid nil))
-    (org-agenda-list nil (org-read-date nil nil "-2d") 4)))
+    (interactive)
+    (let ((org-agenda-start-with-log-mode t)
+          (org-agenda-use-time-grid nil))
+      (org-agenda-list nil (org-read-date nil nil "-2d") 4)))
 
-(defun my-org-agenda-longer-open-loops ()
-  (interactive)
-  (let ((org-agenda-start-with-log-mode t)
-        (org-agenda-use-time-grid nil))
-    (org-agenda-list 'file (org-read-date nil nil "-14d") 28)))
+  (defun my-org-agenda-longer-open-loops ()
+    (interactive)
+    (let ((org-agenda-start-with-log-mode t)
+          (org-agenda-use-time-grid nil))
+      (org-agenda-list 'file (org-read-date nil nil "-14d") 28)))
 
 
   (setq organization-task-id "0f1cf581-cd20-4acd-bf70-e2174635579c")
@@ -573,72 +627,72 @@
 	         ((agenda "" ((org-agenda-span 1)
 			                  (org-super-agenda-groups
 			                   '((:name "Habits"
-				                          :habit t
-                                  :order 2)
+				                    :habit t
+                            :order 2)
 
 			                     (:name "Schedule"
-				                          :time-grid t
-				                          :scheduled t
-				                          :order 1)
+				                    :time-grid t
+				                    :scheduled t
+				                    :order 1)
 			                     (:discard (:anything t))))))
 
-                        (alltodo "" ((org-agenda-overriding-header "Stuck Project")
+            (alltodo "" ((org-agenda-overriding-header "Stuck Project")
 			                   (org-super-agenda-groups
 			                    '((:name none
-				                           :discard (:children "NEXT")
-                                   :discard (:children "IN-PROGRESS")
-				                           :order 4)
+				                     :discard (:children "NEXT")
+                             :discard (:children "IN-PROGRESS")
+				                     :order 4)
 			                      (:name none
-				                           :discard (:children nil)
-				                           :order 4)
+				                     :discard (:children nil)
+				                     :order 4)
 			                      (:name none
-				                           :children todo)))))
+				                     :children todo)))))
 
 
-                        (alltodo "" ((org-agenda-overriding-header "Active Project")
+            (alltodo "" ((org-agenda-overriding-header "Active Project")
 			                   (org-super-agenda-groups
 			                    '((:name none
-				                           :children "NEXT"
-                                   :children "IN-PROGRESS"
-				                           :order 1)
+				                     :children "NEXT"
+                             :children "IN-PROGRESS"
+				                     :order 1)
 			                      (:discard (:anything t))))))
 
 	          (alltodo "" ((org-agenda-overriding-header "In-Progress")
 			                   (org-super-agenda-groups
 			                    '((:name none
-				                           :discard (:not (:todo ("IN-PROGRESS")))
-				                           :discard (:habit)
-				                           :order 6)
+				                     :discard (:not (:todo ("IN-PROGRESS")))
+				                     :discard (:habit)
+				                     :order 6)
 			                      (:name none
-				                           :todo t
-				                           :face (:underline t))
+				                     :todo t
+				                     :face (:underline t))
 			                      ))))
 
             (alltodo "" ((org-agenda-overriding-header "Next Task")
 			                   (org-super-agenda-groups
 			                    '((:name none
-				                           :discard (:not (:todo "NEXT"))
-				                           :discard (:habit)
-				                           :order 5)
+				                     :discard (:not (:todo "NEXT"))
+				                     :discard (:habit)
+				                     :order 5)
 			                      (:name none
-				                           :todo "NEXT"
-				                           :face (:background "" :underline t))))))
+				                     :todo "NEXT"
+				                     :face (:background "" :underline t))))))
 
 	          (alltodo "" ((org-agenda-overriding-header "Project Task")
 			                   (org-agenda-skip-function 'bh/skip-non-project-tasks)
 			                   (org-super-agenda-groups
 			                    '((:name none
-                                   :discard (:tag "HOLD")
-				                           :todo t
-				                           :order 5)))))
+                             :discard (:tag "HOLD")
+				                     :todo t
+				                     :order 5)))))
 
 	          (alltodo "" ((org-agenda-overriding-header "Standalone Task")
 			                   (org-agenda-skip-function 'bh/skip-project-tasks)
 			                   (org-super-agenda-groups
 			                    '((:name none
-                                   :discard (:tag "REFILE")
-				                           :todo ("TODO" "WAITING" "HOLD")
-				                           :order 7)
+                             :discard (:tag "REFILE")
+				                     :todo ("TODO" "WAITING" "HOLD")
+				                     :order 7)
 			                      (:discard (:anything t))))))
             ))
           ))
@@ -787,6 +841,11 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
       :prefix "j"
       :desc "Goto-line" "l" #'avy-goto-line)
 
+(setq ivy-sort-matches-functions-alist
+      '((t)
+        (ivy-switch-buffer . ivy-sort-function-buffer)
+        (counsel-find-file . ivy--)))
+
 
 (use-package! counsel
   :config
@@ -795,12 +854,12 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
   ("C-s" . 'counsel-grep-or-swiper))
 
 ;;; dired-hide-dotfiles
-  (use-package! dired-hide-dotfiles
-    :config
-    (define-key dired-mode-map "." #'dired-hide-dotfiles-mode)
-    (add-hook! 'dired-mode-hook 'as/dired-mode-hook)
-    (defun as/dired-mode-hook ()
-      (dired-hide-dotfiles-mode +1)))
+(use-package! dired-hide-dotfiles
+  :config
+  (define-key dired-mode-map "." #'dired-hide-dotfiles-mode)
+  (add-hook! 'dired-mode-hook 'as/dired-mode-hook)
+  (defun as/dired-mode-hook ()
+    (dired-hide-dotfiles-mode +1)))
 
 ;;; flycheck-ledger
 (use-package! flycheck-ledger
@@ -817,48 +876,48 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 
   (setf url-queue-timeout 30)
 
-(elfeed-org)
+  (elfeed-org)
 
-(setq rmh-elfeed-org-files (list "~/Archive/08/6e648e-2baf-4775-a0bc-8153ae99e505/rss.org"))
+  (setq rmh-elfeed-org-files (list "~/Archive/08/6e648e-2baf-4775-a0bc-8153ae99e505/rss.org"))
 
-(setq-default elfeed-search-filter "@12-hours-ago +unread")
-
-
+  (setq-default elfeed-search-filter "@12-hours-ago +unread")
 
 
-(defun as/elfeed-load-db-and-open ()
-"Wrapper to load the elfeed db from disk before opening"
-(interactive)
-(elfeed-db-load)
-(elfeed)
-(elfeed-update)
-(setq elfeed-search-filter "@1-hours-ago +unread")
-(elfeed-search-update--force))
 
-;;write to disk when quiting
-(defun as/elfeed-save-db-and-bury ()
-"Wrapper to save the elfeed db to disk before burying buffer"
-(interactive)
-(elfeed-db-save)
-(quit-window))
 
-(define-key elfeed-search-mode-map "q" 'as/elfeed-save-db-and-bury)
-(define-key elfeed-search-mode-map "h"
-  (lambda ()
+  (defun as/elfeed-load-db-and-open ()
+    "Wrapper to load the elfeed db from disk before opening"
     (interactive)
-    (elfeed-search-set-filter (default-value 'elfeed-search-filter))))
+    (elfeed-db-load)
+    (elfeed)
+    (elfeed-update)
+    (setq elfeed-search-filter "@1-hours-ago +unread")
+    (elfeed-search-update--force))
 
-(define-key elfeed-search-mode-map (kbd "j") #'next-line)
-(define-key elfeed-search-mode-map (kbd "k") #'previous-line)
+  ;;write to disk when quiting
+  (defun as/elfeed-save-db-and-bury ()
+    "Wrapper to save the elfeed db to disk before burying buffer"
+    (interactive)
+    (elfeed-db-save)
+    (quit-window))
 
-(defun as/elfeed-yank-capture ()
-  (interactive)
-  (elfeed-search-yank)
-  (org-capture nil "l")
-  (message "Entry saved to Inbox"))
+  (define-key elfeed-search-mode-map "q" 'as/elfeed-save-db-and-bury)
+  (define-key elfeed-search-mode-map "h"
+    (lambda ()
+      (interactive)
+      (elfeed-search-set-filter (default-value 'elfeed-search-filter))))
 
-(define-key elfeed-search-mode-map "y" #'as/elfeed-yank-capture)
-)
+  (define-key elfeed-search-mode-map (kbd "j") #'next-line)
+  (define-key elfeed-search-mode-map (kbd "k") #'previous-line)
+
+  (defun as/elfeed-yank-capture ()
+    (interactive)
+    (elfeed-search-yank)
+    (org-capture nil "l")
+    (message "Entry saved to Inbox"))
+
+  (define-key elfeed-search-mode-map "y" #'as/elfeed-yank-capture)
+  )
 
 ;;; frame-font
 (setq my-font-name "DejaVu Sans Mono")
@@ -868,8 +927,8 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
   "Change frame font size to FONT-SIZE.
 If no FONT-SIZE provided, reset the size to its default variable."
   (let ((font-size
-     (or font-size
-       (car (get 'my-font-size 'standard-value)))))
+         (or font-size
+             (car (get 'my-font-size 'standard-value)))))
     (customize-set-variable 'my-font-size font-size)
     (set-frame-font
      (format "%s %d" my-font-name font-size) nil t)))
@@ -890,162 +949,243 @@ If no FONT-SIZE provided, reset the size to its default variable."
   (set-frame-font-size))
 
 ;;; modalka
-    (use-package modalka
-      :config
-      (modalka-global-mode 1)
+(use-package modalka
+  :config
+  (modalka-global-mode 1)
 
-      (defun normal-mode-modalka ()
-	(interactive)
-	(if (modalka-mode nil)
-		  (modalka-mode 1)
-	  (nil)))
+  (defun normal-mode-modalka ()
+	  (interactive)
+	  (if (modalka-mode nil)
+		    (modalka-mode 1)
+	    (nil)))
 
-      (defun insert-mode-modalka ()
-	(interactive)
-	(modalka-mode 0))
+  (defun insert-mode-modalka ()
+	  (interactive)
+	  (modalka-mode 0))
 
-      (setq-default cursor-type '(bar . 2))
-      (setq modalka-cursor-type 'box)
+  (setq-default cursor-type '(bar . 2))
+  (setq modalka-cursor-type 'box)
 
-      (setq org-capture-mode-hook 'insert-mode-modalka)
+  (setq org-capture-mode-hook 'insert-mode-modalka)
 
-      (defun modalka-select-major-mode (modalka-mode-map)
-	(let ((modalka-mode-command (cdr (assoc major-mode modalka-mode-map))))
-	  (if modalka-mode-command (apply modalka-mode-command))))
+  (defun modalka-select-major-mode (modalka-mode-map)
+	  (let ((modalka-mode-command (cdr (assoc major-mode modalka-mode-map))))
+	    (if modalka-mode-command (apply modalka-mode-command))))
 
-      (defun modalka-mode-hydra ()
-	(interactive)
-	(modalka-select-major-mode modalka-major-mode-hydra-list))
-
-
-      (custom-set-variables
-       '(modalka-excluded-modes
-	 (quote
-	  (
-	   ediff-mode
-	   helpful-mode
-	   dired-mode
-	   magit-mode
-	   magit-popup-mode
-	   debugger-mode
-	   ediff-mode
-	   help-mode
-	   git-rebase-mode
-	   help-mode
-	   org-agenda-mode
-	   org-capture-mode
-	   emms-playlist-mode
-	   pdf-tools-modes
-	   undo-tree-visualizer-mode
-	   ))))
-
-      (define-key modalka-mode-map [remap self-insert-command] 'ignore)
-      (define-key global-map [escape] #'normal-mode-modalka)
-
-    (general-def modalka-mode-map
-
-      "<tab>" '+workspace/other
-      "<backtab>" 'ignore
-      "<return>" 'action-key
-      "SPC" 'ignroe
-      "<backspace>" 'ignore
-
-      "a"  'ignore
-      "b"  'ivy-switch-buffer
-      "c"  'org-capture
-      "d"  'dired-jump
-      "e"  'ignore
-      "f"  'counsel-find-file
-      "g"  'ignore
-      "h"  'bury-buffer
-      "i"  #'insert-mode-modalka
-      "j"  'avy-goto-char
-      "k"  'kill-buffer
-      "l"  'ignore
-      "m"  'ignore
-      "n"  'org-tree-to-indirect-buffer
-      "o"  'ignore
-      "p"  'ignore
-      "q"  'ignore
-      "r"  'counsel-recentf
-      "s"  'ignore
-      "t"  '+treemacs/toggle
-      "u"  'ignore
-      "v"  'point-to-register
-      "w"  '+workspace/switch-to
-      "x"  'ignore
-      "y"  'ignore
-      "z"  'ignore
+  (defun modalka-mode-hydra ()
+	  (interactive)
+	  (modalka-select-major-mode modalka-major-mode-hydra-list))
 
 
-      "A"  'ignore
-      "B"  'crux-switch-to-previous-buffer
-      "C"  'ignore
-      "D"  'ignore
-      "E"  'ignore
-      "F"  'ignore
-      "G"  'ignore
-      "H"  'unbury-buffer
-      "I"  'ignore
-      "J"  'ignore
-      "K"  'kill-this-buffer
-      "L"  'ignore
-      "M"  'ignore
-      "N"  'ignore
-      "O"  'ignore
-      "P"  'ignore
-      "Q"  'ignore
-      "R"  'ignore
-      "S"  'ignore
-      "T"  'ignore
-      "U"  'ignore
-      "V"  'jump-to-register
-      "W"  'ignore
-      "X"  'ignore
-      "Y"  'ignore
-      "Z"  'ignore
+  (custom-set-variables
+   '(modalka-excluded-modes
+	   (quote
+	    (
+	     ediff-mode
+	     helpful-mode
+	     dired-mode
+	     magit-mode
+	     magit-popup-mode
+	     debugger-mode
+	     ediff-mode
+	     help-mode
+	     git-rebase-mode
+	     help-mode
+	     org-agenda-mode
+	     org-capture-mode
+	     emms-playlist-mode
+	     pdf-tools-modes
+	     undo-tree-visualizer-mode
+	     ))))
+
+  (define-key modalka-mode-map [remap self-insert-command] 'ignore)
+  (define-key global-map [escape] #'normal-mode-modalka)
+
+  (general-def modalka-mode-map
+
+    "<tab>" '+workspace/other
+    "<tab>" '+workspace/other
+    "<backtab>" 'crux-switch-to-previous-buffer
+    "<return>" 'action-key
+    "SPC" 'ignore
+    "<backspace>" 'ignore
+
+    "a"  'ignore
+    "b"  'ivy-switch-buffer
+    "c"  'org-capture
+    "d"  'dired-jump
+    "e"  'ignore
+    "f"  'counsel-find-file
+    "g"  'ignore
+    "h"  'bury-buffer
+    "i"  #'insert-mode-modalka
+    "j"  'avy-goto-char
+    "k"  'kill-buffer
+    "l"  'ignore
+    "m"  'ignore
+    "n"  'org-tree-to-indirect-buffer
+    "o"  'ignore
+    "p"  'treefactor-throw
+    "q"  'ignore
+    "r"  'counsel-recentf
+    "s"  'ignore
+    "t"  '+treemacs/toggle
+    "u"  'ignore
+    "v"  'point-to-register
+    "w"  '+workspace/switch-to
+    "x"  'ignore
+    "y"  'ignore
+    "z"  'ignore
 
 
-      "0"  'delete-window
-      "1"  'delete-other-windows
-      "2"  'split-window-below
-      "3"  'split-window-right
-      "4"  'ignore
-      "5"  'ignore
-      "6"  'ignore
-      "8"  'ignore
-      "9"  'ignore
+    "A"  'ignore
+    "B"  'ignore
+    "C"  'ignore
+    "D"  'ignore
+    "E"  'ignore
+    "F"  'ignore
+    "G"  'ignore
+    "H"  'unbury-buffer
+    "I"  'ignore
+    "J"  'ignore
+    "K"  'kill-this-buffer
+    "L"  'ignore
+    "M"  'ignore
+    "N"  'ignore
+    "O"  'ignore
+    "P"  'ignore
+    "Q"  'ignore
+    "R"  'ignore
+    "S"  'ignore
+    "T"  'ignore
+    "U"  'ignore
+    "V"  'jump-to-register
+    "W"  'ignore
+    "X"  'ignore
+    "Y"  'ignore
+    "Z"  'ignore
 
-      "!"  'shell-command
-      "@"  'hycontrol-windows-grid
-      "#"  'ignore
-      "$"  'ignore
-      "%"  'ignore
-      "^"  'ignore
-      "&"  'ignore
-      "*"  'ignore
-      "("  'ignore
-      ")"  'ignore
-      "-"  'ignore
-      "+"  'ignore
-      "<"  'ignore
-      ">"  'ignore
-      "?"  'ignore
-      ";"  'ignore
-      "'"  'ignore
-      "\\" 'ignore
-      "["  'ignore
-      "]"  'ignore
-      ","  'winner-undo
-      "."  'winner-redo
-      "/"  'ignore
-      "'"  'ignore
-      "|"  'ignore
-      "="  'ignore
-      "+"  'ignore
-      "-"  'ignore
-      "_"  'ignore)
-    )
+
+    "0"  'delete-window
+    "1"  'delete-other-windows
+    "2"  'split-window-below
+    "3"  'split-window-right
+    "4"  'ignore
+    "5"  'ignore
+    "6"  'ignore
+    "8"  'ignore
+    "9"  'ignore
+
+    "!"  'shell-command
+    "@"  'hycontrol-windows-grid
+    "#"  'ignore
+    "$"  'ignore
+    "%"  'ignore
+    "^"  'ignore
+    "&"  'ignore
+    "*"  'ignore
+    "("  'ignore
+    ")"  'ignore
+    "-"  'ignore
+    "+"  'ignore
+    "<"  'ignore
+    ">"  'ignore
+    "?"  'ignore
+    ";"  'ignore
+    "'"  'ignore
+    "\\" 'ignore
+    "["  'ignore
+    "]"  'ignore
+    ","  'winner-undo
+    "."  'winner-redo
+    "/"  'ignore
+    "'"  'ignore
+    "|"  'ignore
+    "="  'ignore
+    "+"  'ignore
+    "-"  'ignore
+    "_"  'ignore)
+  )
+
+;Hyperbole
+;; (use-package! hyperbole
+;;   :config
+;;   (define-key org-mode-map (kbd "<M-return>") nil))
+;;
+;;; org-journal
+
+(use-package! org-journal
+  :bind
+  ("C-c n j" . org-journal-new-entry)
+  ("C-c n t" . org-journal-today)
+  :custom
+  (org-journal-enable-agenda-integration t)
+  :config
+  (setq org-journal-file-format "private-%Y-%m-%d.org"
+        org-journal-dir "/home/alexander/Projects/LearnInPublic"
+        org-journal-carryover-items nil)
+  (defun org-journal-today ()
+    (interactive)
+    (org-journal-new-entry t)))
+
+
+;;; Twittering-mode
+
+;;; LearnInPublic
+(defun as/LearnInPublic? ()
+  (interactive)
+  (if (yes-or-no-p (message "#LearnInPublic?"))
+      (let ((msg (read-from-minibuffer "Message: "))
+            (buff (file-name-base buffer-file-name)))
+        (if (buffer-modified-p)
+            (if (yes-or-no-p (message "Update repository?"))
+                (as/commit msg buff))
+          (if (yes-or-no-p (message "Post to Twitter?"))
+              (as/plain-tweet msg buff)
+            nil))
+        nil)))
+
+(defun as/commit (msg buff)
+(interactive)
+(save-buffer)
+(magit-call-git "add" (concat buff ".org"))
+(magit-call-git "commit" "-m" msg)
+(magit-call-git "push" "origin")
+(if (yes-or-no-p (message "Post to Twitter?"))
+      (as/tweet msg buff)
+    nil))
+
+(defun as/tweet (msg url)
+  (interactive)
+  (let ((tags (read-from-minibuffer "Tags: ")))
+    (setq tweet-template (concat
+                          msg
+                          "\n\n"
+                          "https://github.com/alex-a-soto/LearnInPublic/blob/master/" url ".org\n\n"
+                          "#LearnInPublic " tags
+                          )))
+(twittering-update-status tweet-template nil nil 'normal t))
+
+(defun as/plain-tweet (msg url)
+  (interactive)
+  (let ((tags (read-from-minibuffer "Tags: ")))
+    (setq tweet-template (concat
+                          msg
+                          "\n\n"
+                          "#LearnInPublic " tags
+                          )))
+(twittering-update-status tweet-template nil nil 'normal t))
+
+(setq browse-url-chrome-program "/usr/bin/google-chrome-stable")
+(setq browse-url-browser-function 'browse-url-chrome)
+
+;;; xournal
+ (openwith-mode t)
+
+(setq openwith-associations '(("\\.xopp\\'" "xournalpp" (file))))
+
+
+
 
 ;;; org-gcal
 (load-file "~/.doom.d/rc-gcal.el")
