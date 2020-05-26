@@ -2,6 +2,8 @@
 :PROPERTIES:
 :SORT:     TYPE
 :END:
+%(org-insert-time-stamp nil t nil nil nil nil)
+
 ** Review Life Goals
 - [ ] Scroll through completed goals.
 - [ ] Move newly completed goals to “Completed” heading for archives.

@@ -1,15 +1,19 @@
 * Morning Routine [0/9]
-- [ ] Make bed
+%(org-insert-time-stamp nil t nil nil nil nil)
+
+- [ ] Meditate
 - [ ] Take multivitamin
 - [ ] Drink water
+- [ ] Make bed
 - [ ] Brush teeth
 - [ ] Shower
+- [ ] Stretch
+- [ ] Pushup
 - [ ] Get dressed
-- [ ] Breakfast
-
 - [ ] Review calendar
-  - [ ] <progn (browse-url "https://calendar.google.com/calendar/r")>
-  - [ ] <progn (browse-url "https://calendar.google.com/calendar/b/1/r")>
-
+<progn (org-gcal-fetch)>
+<progn (org-agenda nil "a")>
 - [ ] Identify Next Tasks and In-Progress tasks
 <progn (org-agenda nil "o")>
+
+- [ ] Breakfast

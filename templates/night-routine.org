@@ -1,4 +1,6 @@
 * Night Routine [0/3]
+%(org-insert-time-stamp nil t nil nil nil nil)
+
 - [ ] Review email, calendar, slack
 - [ ] Identify Most Important Tasks for following day
 - [ ] Bedtime

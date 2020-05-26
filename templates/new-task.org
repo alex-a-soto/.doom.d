@@ -1,5 +1,3 @@
-#+TITLE: New Task
-
 * %^{Task}
 DEADLINE: %^t
 :PROPERTIES:
@@ -12,6 +10,8 @@ DEADLINE: %^t
 :END:
 %^{OUTCOME}p
 %^{AREA}p
+%(org-insert-time-stamp nil t nil nil nil nil)
+
 %?
 - [ ] Add project tags for context (e.g. work, personal)
     <org-set-tags-command>

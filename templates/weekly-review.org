@@ -1,4 +1,5 @@
 * Weekly Review
+%(org-insert-time-stamp nil t nil nil nil nil)
 ** Get Clear [0/5]
 - [ ] Collect Loose Papers and Materials
 - [ ] Get “IN” to Zero

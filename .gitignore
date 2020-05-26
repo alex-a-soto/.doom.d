@@ -1,2 +1,4 @@
-rc-gcal.el
+gcal.el
 .twittering-auth.el
+org-roam.db
+.slack-auth.el

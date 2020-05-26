@@ -1,4 +1,5 @@
 * Annual Review
+%(org-insert-time-stamp nil t nil nil nil nil)
 ** Write Gratitude List
 Experiences, People, Accomplishments, Learnings, Events, Circumstances, Things
 ** Answer questions about last year:

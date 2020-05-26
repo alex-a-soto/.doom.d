@@ -49,53 +49,51 @@
 ;; This is required for some packages whose default branch isn't 'master' (which
 ;; our package manager can't deal with; see raxod502/straight.el#279)
 ;(package! builtin-package :recipe (:branch "develop"))
+;
+;;;; org-now
+(package! org-now
+  :recipe (:type git :host github
+           :repo "alphapapa/org-now"))
+
+;; org-super-agenda
+(package! org-super-agenda)
+
+;;; org-ql
+(package! org-ql)
+
+;;; orgg-web-tools
+(package! org-web-tools)
+
+;;; org-gcal
+(package! org-gcal
+  :recipe (:type git :host github :repo "kidd/org-gcal.el"))
 
 ;;; outshine
 (package! outshine)
+
 ;;; crux
 (package! crux)
+
 ;;; swiper
 (package! swiper)
+
 ;;; scratch
 (package! scratch)
-;;; org-now
-(package! org-now
-  :recipe (:type git :host github
-                 :repo "alphapapa/org-now"))
-;;; org-roam
-;; (package! org-roam
-;;    :recipe (:type git :host github
-;;                   :repo "jethrokuan/org-roam"))
 
-;; (package! company-org-roam
-;;      :recipe (:type git :host github
-;;                   :repo "jethrokuan/company-org-roam"))
-
-;;; org-super-agenda
-(package! org-super-agenda)
-;;; org-ql
-(package! org-ql)
-;;; hyperbole
-(package! hyperbole
-  :recipe (:type git :host github :repo "rswgnu/hyperbole"))
 
 ;;; notdeft
 (package! notdeft
   :recipe (:type git :host github :repo "hasu/notdeft"))
 
 ;;; dired-plus
-(package! dired-plus
-  :recipe (:type git :host github :repo "emacsmirror/dired-plus"))
+(package! dired+)
+
+;;; dired-k
+(package! dired-k)
 
 ;;; bookmark-plus
 (package! bookmark-plus
   :recipe (:type git :host github :repo "emacsmirror/bookmark-plus"))
-
-;;; org-web-tools
-(package! org-web-tools)
-
-;;; org-journal
-;; (package! org-journal)
 
 ;;; graphql-mode
 (package! graphql-mode)
@@ -106,13 +104,28 @@
 ;;; flyecheck-ledger
 (package! flycheck-ledger)
 
+;;; modalka
 (package! modalka)
 
 ;;; openwith
 (package! openwith)
 
-(package! treefactor)
+;;; treefactor
+(package! treefactor
+  :recipe (:type git :host github :repo "cyberthal/treefactor"))
 
-;;;org-gcal
-(package! org-gcal
-  :recipe (:type git :host github :repo "kidd/org-gcal.el"))
+;;; filetags
+(package! filetags)
+
+;;; date2name
+(package! date2name)
+
+;;; hyperbole
+(package! hyperbole
+  :recipe (:type git :host github :repo "rswgnu/hyperbole"))
+
+;;; deadgrep
+(package! deadgrep)
+
+;;; org-chef
+(package! org-chef)

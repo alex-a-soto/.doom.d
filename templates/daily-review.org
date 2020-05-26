@@ -1,4 +1,6 @@
 * Daily Review
+%(org-insert-time-stamp nil t nil nil nil nil)
+
 - [ ] Clear Physical Desktop / Inbox / Notebook
 <as/goto-inbox>
 
