@@ -49,11 +49,6 @@
 ;; This is required for some packages whose default branch isn't 'master' (which
 ;; our package manager can't deal with; see raxod502/straight.el#279)
 ;(package! builtin-package :recipe (:branch "develop"))
-;
-;;;; org-now
-(package! org-now
-  :recipe (:type git :host github
-           :repo "alphapapa/org-now"))
 
 ;; org-super-agenda
 (package! org-super-agenda)
