@@ -855,7 +855,7 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 
   (defun as/goto-inbox ()
     (interactive)
-    (journal-file-today)
+    (find-file "~/1-Agenda/Inbox.org")
     (dired-other-window "~/0-Inbox")
     (dired-hide-details-mode)
     )
