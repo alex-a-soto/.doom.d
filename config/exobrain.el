@@ -22,7 +22,7 @@
 ;; they are implemented.
 
 
-;;; Configuration
+;;; Sane Defaults
 ;;;; Personal Information
 (setq user-full-name "Alexander Soto"
       user-mail-address "alexander.soto@gmail.com")
@@ -77,3 +77,6 @@
 ;;;; Enable narrow functions
 (put 'narrow-to-page 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
+
+;;; Packages
+;;;; TODO neuron-mode
