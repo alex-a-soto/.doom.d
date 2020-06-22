@@ -1,7 +1,7 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
 (cond
- ((string-equal system-name "exobrain")
+ ((string-equal system-name "exomind")
   (load-file (concat "~/.doom.d/init/" system-name ".el"))))
 
 (cond

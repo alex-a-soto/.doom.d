@@ -1,0 +1,2 @@
+;;; openwith
+(package! openwith)
