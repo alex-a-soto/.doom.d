@@ -216,7 +216,7 @@
 
   (setq org-time-stamp-rounding-minutes (quote (1 1)))
 
-  (setq org-default-priority ?D)
+  (setq org-lowest-priority 68)
   (setq org-agenda-follow-indirect t)
 
   (setq org-agenda-window-setup 'current-window)
@@ -323,10 +323,10 @@
             (alltodo "" ((org-agenda-overriding-header "Stuck Project")
                          (org-super-agenda-groups
                           '( (:name none
+                              :discard (:not (:scheduled))
                               :discard (:children "NEXT")
                               :discard (:children "IN-PROGRESS")
                               :order 4)
-
                              (:name none
                               :discard (:children nil)
                               :order 4)
@@ -337,6 +337,7 @@
             (alltodo "" ((org-agenda-overriding-header "Active Project")
                          (org-super-agenda-groups
                           '((:name none
+                             :discard (:not (:scheduled))
                              :children "NEXT"
                              :children "IN-PROGRESS"
                              :order 1)
@@ -368,6 +369,7 @@
                          (org-agenda-skip-function 'bh/skip-non-project-tasks)
                          (org-super-agenda-groups
                           '((:name none
+                             :discard (:not (:scheduled))
                              :discard (:tag "HOLD")
                              :todo t
                              :order 5)))))
@@ -376,6 +378,7 @@
                          (org-agenda-skip-function 'bh/skip-project-tasks)
                          (org-super-agenda-groups
                           '((:name none
+                             :discard (:not (:scheduled))
                              :discard (:tag "REFILE")
                              :todo ("TODO")
                              :order 7)
@@ -385,6 +388,7 @@
                          (org-agenda-skip-function 'bh/skip-project-tasks)
                          (org-super-agenda-groups
                           '((:name none
+                             :discard (:not (:scheduled))
                              :discard (:tag "REFILE")
                              :tag ("HOLD")
                              :todo ("WAITING" "DELEGATE")
@@ -524,4 +528,4 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
     (call-interactively 'org-attach-dired-to-subtree)
     )
 ;;;; org-gcal
-;(load-file "~/.doom.d/gcal.el")
+(load-file "~/.doom.d/gcal.el")

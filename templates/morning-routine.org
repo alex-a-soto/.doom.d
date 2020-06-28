@@ -1,13 +1,11 @@
 * Morning Routine [0/9]
 %(org-insert-time-stamp nil t nil nil nil nil)
 
-- [ ] Meditate
-- [ ] Take multivitamin
 - [ ] Drink water
+- [ ] Take multivitamin
 - [ ] Make bed
 - [ ] Brush teeth
 - [ ] Shower
-- [ ] Stretch
 - [ ] Pushup
 - [ ] Get dressed
 - [ ] Review calendar

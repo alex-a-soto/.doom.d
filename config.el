@@ -17,6 +17,7 @@
    (quote
     (ediff-mode helpful-mode dired-mode magit-mode magit-popup-mode debugger-mode ediff-mode help-mode git-rebase-mode help-mode org-agenda-mode org-capture-mode emms-playlist-mode pdf-tools-modes undo-tree-visualizer-mode)))
  '(mouse-1-click-follows-link nil)
+ '(my-font-size 14)
  '(which-key-prefix-prefix "+")
  '(which-key-separator " "))
 (custom-set-faces
@@ -24,4 +25,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:family "DejaVu Sans Mono" :foundry "PfEd" :slant normal :weight normal :height 90 :width normal))))
  '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0)))))
