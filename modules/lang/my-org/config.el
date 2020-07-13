@@ -53,7 +53,7 @@
 (setq org-use-fast-todo-selection t)
 
 ;;;; org-refile
-(setq org-id-locations-file "/home/alexander/.doom.d/.orgids")
+;(setq org-id-locations-file "/home/alexander/.doom.d/.orgids")
 
 ;(setq org-refile-use-outline-path 'file)
 ;(setq org-outline-path-complete-in-steps nil)
@@ -107,7 +107,7 @@
 (setq org-global-properties (quote (("Effort_ALL" . "0:05 0:10 0:15 0:25 0:45 1:00 1:30 2:00 3:00 4:00 5:00 6:00 0:00")
 				                            ("STYLE_ALL" . "habit"))))
 ;;;; org-capture templates
-(require 'org-protocol)
+;(require 'org-protocol)
 
 (defun org-journal-find-location ()
   (interactive)
@@ -121,15 +121,15 @@
 
 (setq org-capture-templates
 	    (quote
-       (("t" "Task" entry (file org-inbox-file) (function as/quick-capture))
+       (("t" "Task" entry (file org-inbox-file) "* TODO %^{Task} \n %U \n\n %?")
         ("p" "Project" entry (file org-inbox-file) (file "~/.doom.d/templates/new-project.org"))
         ("e" "Event" entry (file org-inbox-file) "* %^{Event} %^g \n\n%^{When?}t\n")
-        ("l" "Link" entry (file org-inbox-file) "* %(org-cliplink-capture) \n %(org-insert-time-stamp nil t nil nil nil nil) \n\n %?" :immediate-finish t)
+        ("l" "Link" entry (file org-inbox-file) "* %(org-cliplink-capture) \n %U \n\n %?" :immediate-finish t)
 
         ("n" "Note")
-		    ("nn" "Note" entry (file org-inbox-file) "* %^{Note} \n %(org-insert-time-stamp nil t nil nil nil nil) \n\n %?")
+		    ("nn" "Note" entry (file org-inbox-file) "* %^{Note} \n %U \n\n %?")
         ("np" "Plain Note" entry (file org-inbox-file) "* %^{Note} \n %T \n %?")
-        ("ns" "Selection" entry (file org-inbox-file) "* %^{Title}  \nSource: %u, [[%F][%f]]\n\n %(org-insert-time-stamp nil t nil nil nil nil)\n\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n %?")
+        ("ns" "Selection" entry (file org-inbox-file) "* %^{Title}  \nSource: %u, [[%F][%f]]\n\n %U \n\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n %?")
 
         ("c" "Cooking")
         ("cc" "Cookbook" entry (file org-inbox-file) "%(org-chef-get-recipe-from-url)" :empty-lines 1)
@@ -178,7 +178,7 @@
   (mapconcat #'identity
              `(
                ,(as/quick-capture-status)
-               "%(org-insert-time-stamp nil t nil nil nil nil)\n\n%?")
+               "%U")
              "\n"))
 
 (setq org-agenda-time-grid '((daily today require-timed)
@@ -190,7 +190,7 @@
 
 ;;;; org-agenda
 (after! org-agenda
-  (require 'ox-org)
+;  (require 'ox-org)
 
   (setq org-agenda-prefix-format '((agenda . " %i %?-12t% s")
  (todo . " ")
@@ -212,7 +212,7 @@
   ;;                                                  )))
 
 
-  (setq org-archive-location "/home/alexander/2-Linked/2-Time/Archive/%s_archive::")
+  (setq org-archive-location "/home/user/2-Linked/4-Time/1-Me/%s_archive::")
 
   (setq org-time-stamp-rounding-minutes (quote (1 1)))
 
