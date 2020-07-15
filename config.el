@@ -12,7 +12,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(bmkp-last-as-first-bookmark-file "~/.emacs.d/.local/etc/bookmarks")
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(bmkp-last-as-first-bookmark-file "/home/alexander/.emacs.d/.local/etc/bookmarks")
+ '(doom-modeline-mode t)
  '(modalka-excluded-modes
    (quote
     (ediff-mode helpful-mode dired-mode magit-mode magit-popup-mode debugger-mode ediff-mode help-mode git-rebase-mode help-mode org-agenda-mode org-capture-mode emms-playlist-mode pdf-tools-modes undo-tree-visualizer-mode)))

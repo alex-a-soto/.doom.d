@@ -1,0 +1,8 @@
+
+"HYPB"
+("Day_View" nil nil eval-elisp ((org-agenda nil "a")) "alexander.soto@gmail.com" "20200715:13:35:53" nil nil)
+("Agenda" nil nil eval-elisp ((org-agenda nil "o")) "alexander.soto@gmail.com" "20200715:13:35:07" nil nil)
+("Capture" nil nil eval-elisp ((org-capture)) "alexander.soto@gmail.com" "20200715:13:29:43" nil nil)
+("View_Bookmarks" nil nil eval-elisp ((call-interactively (quote bookmark-bmenu-list))) "alexander.soto@gmail.com" "20200714:19:09:17" nil nil)
+("PIM" nil nil link-to-file-line ("../../2-Linked/HUD/pim.org" 3) "alexander.soto@gmail.com" "20200714:18:53:42" "alexander.soto" "20200714:18:55:11")
+("Create_Bookmark" nil nil eval-elisp ((call-interactively (quote bookmark-set))) "alexander.soto@gmail.com" "20200714:18:49:59" nil nil)

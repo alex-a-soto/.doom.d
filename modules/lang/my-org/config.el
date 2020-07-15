@@ -119,9 +119,14 @@
 
 (setq org-inbox-file "~/1-Agenda/Inbox.org")
 
+(setq anki-flashcards "~/2-Linked/3-Persinter/1-persinter/flashcards.org")
+
+(setq rc-journal "~/1-Agenda/4-Time/2-Not-me/0-Resilient Coders/journal.org")
+
 (setq org-capture-templates
 	    (quote
        (("t" "Task" entry (file org-inbox-file) "* TODO %^{Task} \n %U \n\n %?")
+
         ("p" "Project" entry (file org-inbox-file) (file "~/.doom.d/templates/new-project.org"))
         ("e" "Event" entry (file org-inbox-file) "* %^{Event} %^g \n\n%^{When?}t\n")
         ("l" "Link" entry (file org-inbox-file) "* %(org-cliplink-capture) \n %U \n\n %?" :immediate-finish t)
@@ -129,17 +134,16 @@
         ("n" "Note")
 		    ("nn" "Note" entry (file org-inbox-file) "* %^{Note} \n %U \n\n %?")
         ("np" "Plain Note" entry (file org-inbox-file) "* %^{Note} \n %T \n %?")
-        ("ns" "Selection" entry (file org-inbox-file) "* %^{Title}  \nSource: %u, [[%F][%f]]\n\n %U \n\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n %?")
+        ("ns" "Selection" entry (file anki-flashcards) "* %^{Title}  \nSource: %u, [[%F][%f]]\n\n %U \n\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n %?")
 
-        ("c" "Cooking")
-        ("cc" "Cookbook" entry (file org-inbox-file) "%(org-chef-get-recipe-from-url)" :empty-lines 1)
-        ("cm" "Manual Cookbook" entry (file org-inbox-file) "* %^{Recipe title: }\n  :PROPERTIES:\n  :source-url:\n  :servings:\n  :prep-time:\n  :cook-time:\n  :ready-in:\n  :END:\n** Ingredients\n   %?\n** Directions\n\n")
-
-
+        ("f" "Flashcards" entry (file anki-flashcards) "* %^{Title} \n:PROPERTIES: \n :ANKI_DECK: %^{Deck} \n :ANKI_NOTE_TYPE: Cloze \n :END: \n\n** Text \n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n %?")
 
         ("j" "Journal")
-		    ("jj" "Journal" entry (file org-inbox-file) "* %^{Title} %^g \n %(org-insert-time-stamp nil t nil nil nil nil) \n\n %?")
-		    ("jp" "Problem" entry (file org-inbox-file) "* Problem - %^{Domain} %^g \n %(org-insert-time-stamp nil t nil nil nil nil) \n\n *Problem:* %?\n\n *Insight:*\n\n *Tomorrow:*\n\n")
+        ("jj" "Resilient" entry
+         (file+function rc-journal org-reverse-datetree-goto-date-in-file)
+         "* %^{Title} :resilient: \n %(org-insert-time-stamp nil t nil nil nil nil) \n\n %?")
+		    ("jp" "Personal" entry (file org-inbox-file) "* %^{Title} %^g \n %(org-insert-time-stamp nil t nil nil nil nil) \n\n %?")
+		    ("j!" "Problem" entry (file org-inbox-file) "* Problem - %^{Domain} %^g \n %(org-insert-time-stamp nil t nil nil nil nil) \n\n *Problem:* %?\n\n *Insight:*\n\n *Tomorrow:*\n\n")
 		    ("jc" "Code" entry    (file org-inbox-file) "* Code - %^{Title} %^g \n %(org-insert-time-stamp nil t nil nil nil nil) \n\n#+BEGIN_SRC\n%i\n#+END_SRC\n\n%?")
         ("jf" "Focus Block" entry (file org-inbox-file) "* Focus - %^{Focus:} %^g \n %(org-insert-time-stamp nil t nil nil nil nil) \n\n %?")
 		    ("jr" "Recovery Block" entry (file org-inbox-file) "* Recovery - %^{Recovery:} %^g \n %(org-insert-time-stamp nil t nil nil nil nil) \n\n %?")
@@ -148,16 +152,16 @@
         ("jg" "Github Issue" entry (file org-inbox-file) "* %? \n- Bug Description\n\n- Steps to Reproduce\n\n- Actual Result\n\n- Expected Result\n\n- Build Version  \n\n")
 
         ("r" "Routines")
-        ("rr" "Morning Routine" entry (file org-inbox-file) (file "~/.doom.d/templates/morning-routine.org"))
-        ("re" "Evening Routine" entry (file org-inbox-file) (file "~/.doom.d/templates/evening-routine.org"))
-        ("rb" "Bedtime Routine" entry (file org-inbox-file) (file "~/.doom.d/templates/night-routine.org"))
-        ("r!" "Meta Review" entry (file+olp+datetree "/tmp/reviews.org") (file "~/.doom.d/templates/meta.org"))
+        ("rm" "Morning" entry (file org-inbox-file) (file "~/.doom.d/templates/morning-routine.org"))
+        ("re" "Evening" entry (file org-inbox-file) (file "~/.doom.d/templates/evening-routine.org"))
+        ("rb" "Bedtime" entry (file org-inbox-file) (file "~/.doom.d/templates/night-routine.org"))
+        ("rp" "Processing" entry (file+olp+datetree "/tmp/reviews.org") (file "~/.doom.d/templates/meta.org"))
 
-        ("w" "Review")
-        ("wd" "Daily Review" entry (file org-inbox-file) (file "~/.doom.d/templates/daily-review.org"))
-        ("ww" "Weekly Review" entry (file org-inbox-file) (file "~/.doom.d/templates/weekly-review.org"))
-        ("wm" "Monthly Review" entry (file org-inbox-file) (file "~/.doom.d/templates/monthly-review.org"))
-        ("wy" "Yearly Review" entry (file org-inbox-file) (file "~/.doom.d/templates/annual-review.org"))
+        ("w" "Revie(w)")
+        ("wd" "Daily" entry (file org-inbox-file) (file "~/.doom.d/templates/daily-review.org"))
+        ("ww" "Weekly" entry (file org-inbox-file) (file "~/.doom.d/templates/weekly-review.org"))
+        ("wm" "Monthly" entry (file org-inbox-file) (file "~/.doom.d/templates/monthly-review.org"))
+        ("wy" "Yearly" entry (file org-inbox-file) (file "~/.doom.d/templates/annual-review.org"))
 
 
         )))
@@ -527,5 +531,6 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
     (other-window 1 nil)
     (call-interactively 'org-attach-dired-to-subtree)
     )
+
 ;;;; org-gcal
 (load-file "~/.doom.d/gcal.el")

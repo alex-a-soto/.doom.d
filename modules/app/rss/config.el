@@ -39,3 +39,13 @@
   (message "Entry saved to Inbox"))
 
 (define-key elfeed-search-mode-map "y" #'as/elfeed-yank-capture)
+
+(use-package! elfeed-org
+  :when (featurep! +org)
+  :after elfeed
+  :config
+  (and (let ((default-directory org-directory))
+         (setq rmh-elfeed-org-files
+               (cl-remove-if-not
+                #'file-exists-p (mapcar #'expand-file-name rmh-elfeed-org-files))))
+       (elfeed-org)))

@@ -57,7 +57,7 @@
       "<tab>" '+workspace/other
       "<backtab>" 'crux-switch-to-previous-buffer
       "<return>" 'hkey-either
-      "SPC" 'ignore
+      "SPC" 'gbut:act
       "<backspace>" 'ignore
 
       "a"  'ignore
@@ -74,7 +74,7 @@
       "l"  'ignore
       "m"  'ignore
       "n"  'org-tree-to-indirect-buffer
-      "o"  'ignore
+      "o"  'other-window
       "p"  'treefactor-throw
       "q"  'ignore
       "r"  'counsel-recentf
@@ -83,7 +83,7 @@
       "u"  'ignore
       "v"  'point-to-register
       "w"  '+workspace/switch-to
-      "x"  'ignore
+      "x"  'counsel-M-x
       "y"  'ignore
       "z"  'ignore
 

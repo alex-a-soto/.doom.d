@@ -8,6 +8,7 @@
 - [ ] add 48-hour calendar entries
   - [ ] '3dashboard | ** @time | [next appointment time]
   - [ ] Google Calendar
+- [ ] Include Google Meet ranscription from taciq
 - [ ] [[id:41abc95a-de60-4b95-bc17-1ee31030a7b4][Daily sequence checklist v1.0.0]]
 
 ** Task switching
