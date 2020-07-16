@@ -1,0 +1,5 @@
+#+TITLE: Personal Information Manager
+
+<(Agenda)>
+<(Day View)>
+<(Capture)>

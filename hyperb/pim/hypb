@@ -1,0 +1,5 @@
+
+"agenda.org"
+("Capture" nil nil eval-elisp ((org-capture)) "alexander.soto@gmail.com" "20200716:14:12:33" nil nil)
+("Day_View" nil nil eval-elisp ((org-agenda nil "a")) "alexander.soto@gmail.com" "20200716:14:10:12" nil nil)
+("Agenda" nil nil eval-elisp ((org-agenda nil "o")) "alexander.soto@gmail.com" "20200716:14:08:48" "alexander.soto" "20200716:14:11:42")
