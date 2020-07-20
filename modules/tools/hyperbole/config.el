@@ -10,8 +10,8 @@
   (setq hattr:filename "hypb")
   (setq gbut:file (concat "~/.doom.d/hyperb/HYPB"))
 
-  (setq browse-url-firefox-program "firefox-esr")
-  (setq browse-url-browser-function #'browse-url-firefox)
+  (setq browse-url-firefox-program "firefox")
+  (setq browse-url-browser-function #'browse-url-chrome)
   (setq hyperbole-web-search-browser-function #'browse-url-firefox)
 
 (defun as/find-overview ()
