@@ -1,17 +1,3 @@
-(cond
- ((string-equal system-name "exomind")
-  (load-file (concat "~/.doom.d/config/" system-name ".el"))))
-
-(cond
- ((string-equal system-name "alpha")
-  (load-file (concat "~/.doom.d/config/" system-name ".el"))))
-
-
-(cond
- ((string-equal system-name "SurfaceGo")
-  (load-file (concat "~/.doom.d/config/" system-name ".el"))))
-
-(load-file "~/.doom.d/config/defaults.el")
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -533,4 +533,4 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
     )
 
 ;;;; org-gcal
-(load-file "~/.doom.d/gcal.el")
+;(load-file "~/.doom.d/gcal.el")
