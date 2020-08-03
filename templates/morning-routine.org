@@ -1,4 +1,4 @@
-* Morning Routine [0/9]
+* Morning Routine [0/8]
 %(org-insert-time-stamp nil t nil nil nil nil)
 
 - [ ] Drink water
@@ -7,11 +7,5 @@
 - [ ] Brush teeth
 - [ ] Shower
 - [ ] Pushup
-- [ ] Get dressed
-- [ ] Review calendar
-<progn (org-gcal-fetch)>
-<progn (org-agenda nil "a")>
-- [ ] Identify Next Tasks and In-Progress tasks
-<progn (org-agenda nil "o")>
-
 - [ ] Breakfast
+- [ ] Get dressed

@@ -1,6 +1,8 @@
 
 "HYPB"
+("Switch_to_buffer" nil nil eval-elisp ((counsel-switch-buffer)) "alexander.soto@gmail.com" "20200803:18:55:29" "alexander.soto" "20200803:18:56:40")
+("PIM:_Zettelkasten" nil nil link-to-file-line ("./pim/zettelkasten.org" 3) "alexander.soto@gmail.com" "20200803:09:17:50" nil nil)
 ("Save_Bookmarks" nil nil eval-elisp ((call-interactively (quote bookmark-bmenu-save))) "alexander.soto@gmail.com" "20200716:14:24:42" nil nil)
-("PIM:Agenda" nil nil link-to-file-line ("/home/alexander/.doom.d/hyperb/pim/agenda.org" 3) "alexander.soto@gmail.com" "20200714:18:53:42" "alexander.soto" "20200716:14:10:59")
+("PIM:_Agenda" nil nil link-to-file-line ("./pim/agenda.org" 3) "alexander.soto@gmail.com" "20200714:18:53:42" "alexander.soto" "20200803:09:24:34")
 ("View_Bookmarks" nil nil eval-elisp ((call-interactively (quote bookmark-bmenu-list))) "alexander.soto@gmail.com" "20200714:19:09:17" nil nil)
 ("Create_Bookmark" nil nil eval-elisp ((call-interactively (quote bookmark-set))) "alexander.soto@gmail.com" "20200714:18:49:59" nil nil)

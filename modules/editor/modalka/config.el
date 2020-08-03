@@ -54,7 +54,6 @@
     (general-def modalka-mode-map
 
       "<tab>" '+workspace/other
-      "<tab>" '+workspace/other
       "<backtab>" 'crux-switch-to-previous-buffer
       "<return>" 'hkey-either
       "SPC" 'gbut:act
@@ -78,7 +77,7 @@
       "p"  'treefactor-throw
       "q"  'ignore
       "r"  'counsel-recentf
-      "s"  'ignore
+      "s"  'swiper
       "t"  '+treemacs/toggle
       "u"  'ignore
       "v"  'point-to-register

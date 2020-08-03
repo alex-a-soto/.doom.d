@@ -1,5 +1,33 @@
 
+"zettelkasten.org"
+("Query_tags" nil nil eval-elisp ((call-interactively (quote neuron-query-tags))) "alexander.soto@gmail.com" "20200803:09:21:11" "alexander.soto" "20200803:09:21:49")
+("New_Zettel" nil nil eval-elisp ((call-interactively (quote neuron-new-zettel))) "alexander.soto@gmail.com" "20200803:09:19:19" nil nil)
+("Edit_Zettel" nil nil eval-elisp ((call-interactively (quote neuron-edit-zettel))) "alexander.soto@gmail.com" "20200803:09:14:32" "alexander.soto" "20200803:09:14:53")
+
 "agenda.org"
-("Capture" nil nil eval-elisp ((org-capture)) "alexander.soto@gmail.com" "20200716:14:12:33" nil nil)
-("Day_View" nil nil eval-elisp ((org-agenda nil "a")) "alexander.soto@gmail.com" "20200716:14:10:12" nil nil)
-("Agenda" nil nil eval-elisp ((org-agenda nil "o")) "alexander.soto@gmail.com" "20200716:14:08:48" "alexander.soto" "20200716:14:11:42")
+("News" nil nil eval-elisp ((elfeed)) "alexander.soto@gmail.com" "20200803:18:57:09" "alexander.soto" "20200803:18:57:17")
+("Current_task" nil nil eval-elisp ((org-clock-goto)) "alexander.soto@gmail.com" "20200803:18:49:00" "alexander.soto" "20200803:18:59:36")
+("Last_task" nil nil eval-elisp ((call-interactively (quote bh/clock-in-last-task))) "alexander.soto@gmail.com" "20200803:18:47:27" "alexander.soto" "20200803:18:59:51")
+("View_calendar" nil nil eval-elisp ((calendar)) "alexander.soto@gmail.com" "20200803:18:39:31" "alexander.soto" "20200803:18:46:11")
+("Completed_tasks" nil nil eval-elisp ((org-todo-list "DONE")) "alexander.soto@gmail.com" "20200803:18:28:52" "alexander.soto" "20200803:18:29:10")
+("On_hold" nil nil eval-elisp ((org-todo-list "HOLD")) "alexander.soto@gmail.com" "20200803:18:15:18" "alexander.soto" "20200803:18:29:19")
+("Waiting_for" nil nil eval-elisp ((org-todo-list "WAITING")) "alexander.soto@gmail.com" "20200803:18:14:55" nil nil)
+("Next_actions" nil nil eval-elisp ((org-todo-list "NEXT")) "alexander.soto@gmail.com" "20200803:17:52:52" "alexander.soto" "20200803:18:42:36")
+("Monthly" nil nil eval-elisp ((org-capture nil "wm")) "alexander.soto@gmail.com" "20200803:17:40:29" nil nil)
+("Weekly" nil nil eval-elisp ((org-capture nil "ww")) "alexander.soto@gmail.com" "20200803:17:40:11" nil nil)
+("Daily" nil nil eval-elisp ((org-capture nil "wd")) "alexander.soto@gmail.com" "20200803:17:38:51" "alexander.soto" "20200803:17:39:04")
+("Flashcard" nil nil eval-elisp ((org-capture nil "f")) "alexander.soto@gmail.com" "20200803:17:38:01" nil nil)
+("Create_habit" nil nil eval-elisp ((org-capture nil "h")) "alexander.soto@gmail.com" "20200803:17:37:37" "alexander.soto" "20200803:18:46:04")
+("Link" nil nil eval-elisp ((org-capture nil "l")) "alexander.soto@gmail.com" "20200803:17:35:35" nil nil)
+("Note" nil nil eval-elisp ((org-capture nil "n")) "alexander.soto@gmail.com" "20200803:17:35:19" nil nil)
+("Phone_Call" nil nil eval-elisp ((org-capture nil "c")) "alexander.soto@gmail.com" "20200803:17:25:01" nil nil)
+("Meeting" nil nil eval-elisp ((org-capture nil "m")) "alexander.soto@gmail.com" "20200803:17:24:31" nil nil)
+("Project" nil nil eval-elisp ((org-capture nil "p")) "alexander.soto@gmail.com" "20200803:17:23:27" nil nil)
+("Task" nil nil eval-elisp ((org-capture nil "t")) "alexander.soto@gmail.com" "20200803:17:22:55" nil nil)
+("Personal_Journal" nil nil eval-elisp ((org-capture nil "jp")) "alexander.soto@gmail.com" "20200803:17:09:49" nil nil)
+("Resilient_Journal" nil nil eval-elisp ((org-capture nil "jj")) "alexander.soto@gmail.com" "20200803:17:09:24" nil nil)
+("Punch-Out" nil nil eval-elisp ((call-interactively (quote bh/punch-out))) "alexander.soto@gmail.com" "20200803:16:41:00" nil nil)
+("Punch-In" nil nil eval-elisp ((call-interactively (quote bh/punch-in))) "alexander.soto@gmail.com" "20200803:10:54:43" "alexander.soto" "20200803:16:47:22")
+("Bedtime_Routine" nil nil eval-elisp ((org-capture nil "rb")) "alexander.soto@gmail.com" "20200803:09:47:15" nil nil)
+("Morning_Routine" nil nil eval-elisp ((org-capture nil "rm")) "alexander.soto@gmail.com" "20200803:09:40:44" "alexander.soto" "20200803:09:41:56")
+("Review_Agenda" nil nil eval-elisp ((org-agenda nil " ")) "alexander.soto@gmail.com" "20200716:14:08:48" "alexander.soto" "20200803:19:22:13")

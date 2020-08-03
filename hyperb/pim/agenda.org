@@ -1,5 +1,39 @@
 #+TITLE: Personal Information Manager
+#+STARTUP: showall
 
-<(Agenda)>
-<(Day View)>
-<(Capture)>
+<(Punch-In)>
+<(Morning Routine)>
+<(Review Agenda)>
+
+* Agenda Views
+<(Next actions)>
+<(Waiting for)>
+<(On hold)>
+<(Completed tasks)>
+* Capture
+<(Task)>
+<(Project)>
+<(Meeting)>
+<(Note)>
+<(Link)>
+<(Phone Call)>
+<(Flashcard)>
+* Journal entries
+<(Personal Journal)>
+<(Resilient Journal)>
+* Review
+<(Daily)>
+<(Weekly)>
+<(Monthly)>
+* Clock
+<(Current task)>
+<(Last task)>
+
+* End of day
+<(Bedtime Routine)>
+<(Punch-Out)>
+
+* Actions
+<(Create habit)>
+<(View calendar)>
+<(News)>

@@ -11,7 +11,7 @@
   (setq gbut:file (concat "~/.doom.d/hyperb/HYPB"))
 
   (setq browse-url-firefox-program "firefox")
-  (setq browse-url-browser-function #'browse-url-chrome)
+  (setq browse-url-browser-function #'browse-url-firefox)
   (setq hyperbole-web-search-browser-function #'browse-url-firefox)
 
 (defun as/find-overview ()

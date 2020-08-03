@@ -26,7 +26,7 @@ Elements of ALIST that are not conses are ignored."
     (+ivy-file-search :in neuron-zettelkasten :recursive nil :prompt "Search Zettelkasten: ")
     (neuron-mode)))
 
-  (defun neuron-blog-post ()
+  (defun neuron-timeline-post ()
   "Create or open today's daily notes."
   (interactive)
   (neuron-check-if-zettelkasten-exists)
@@ -42,7 +42,7 @@ Elements of ALIST that are not conses are ignored."
       (pop-to-buffer-same-window buffer)
       (neuron-mode)
       (unless exists
-        (dolist (tag neuron-blog-tag)
+        (dolist (tag neuron-timeline-tag)
           (neuron-add-tag tag))))))
 
 (use-package! neuron-mode
@@ -61,7 +61,7 @@ Elements of ALIST that are not conses are ignored."
           "a" #'neuron-add-tag
           "i" #'neuron-insert-tag
           "q" #'neuron-query-tags
-          "b" #'neuron-blog-post
+          "t" #'neuron-timeline-post
           )
                  
           ;Alternatively, bind all rib commands in a separate prefix
@@ -98,7 +98,7 @@ Elements of ALIST that are not conses are ignored."
               
   (map! :leader "sz" #'search-zettelkasten)
 
-  (setq neuron-blog-tag '("timeline"))
+  (setq neuron-timeline-tag '("timeline"))
 
 
   )

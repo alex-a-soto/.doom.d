@@ -1,0 +1,5 @@
+#+TITLE: Zettelkasten
+
+<(New Zettel)>
+<(Edit Zettel)>
+<(Query tags)>
