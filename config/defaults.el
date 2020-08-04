@@ -128,23 +128,16 @@ If no FONT-SIZE provided, reset the size to its default variable."
 (add-hook 'eww-after-render-hook 'visual-line-mode)
 
 
-;;; Which Key
-(use-package! which-key
-  :diminish
-  :config
-  (setq which-key-sort-order #'which-key-prefix-then-key-order
-	      which-key-sort-uppercase-first nil
-	      which-key-add-column-padding 1
-	      which-key-max-display-columns nil
-	      which-key-idle-delay 0.0
-	      which-key-special-keys nil
-	      which-key-min-display-lines 7)
-  (set-face-attribute 'which-key-local-map-description-face nil :weight 'bold)
-  (which-key-setup-side-window-bottom)
-  :custom
-  (which-key-separator " ")
-  (which-key-prefix-prefix "+"))
+(setq company-echo-delay 0)
+(setq company-idle-delay 0.2)
+(setq company-minimum-prefix-length 2)
+(setq company-tooltip-limit 20)
 
+(custom-set-faces
+ '(aw-leading-char-face
+   ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+
+(global-company-mode t)
 
 
 ;;;; org-journal

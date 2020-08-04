@@ -51,6 +51,7 @@
     (interactive)
     (delete-other-windows)
     (goto-char (point-min))
+    (org-next-visible-heading 1)
     (dired-other-window "~/1-Agenda")
     (other-window -1))
 
@@ -58,5 +59,6 @@
     (interactive)
     (delete-other-windows)
     (goto-char (point-min))
+    (org-next-visible-heading 1)
     (dired-other-window "~/2-Linked")
     (other-window -1))

@@ -60,7 +60,7 @@
       "<backspace>" 'ignore
 
       "a"  'ignore
-      "b"  'ivy-switch-buffer
+      "b"  '+ivy/switch-workspace-buffer
       "c"  'org-capture
       "d"  'dired-jump
       "e"  'ignore
@@ -88,7 +88,7 @@
 
 
       "A"  'ignore
-      "B"  'ignore
+      "B"  'ivy-switch-buffer
       "C"  'ignore
       "D"  'ignore
       "E"  'ignore

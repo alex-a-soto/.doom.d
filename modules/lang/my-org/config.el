@@ -149,11 +149,12 @@
 
 (add-hook 'org-capture-mode-hook (lambda () (call-interactively 'org-id-get-create)))
 
-(setq org-habit-show-all-today t)
+(setq org-habit-show-all-today nil)
 (setq org-habit-show-habits-only-for-today t)
-(setq org-agenda-show-future-repeats 'next)
+(setq org-agenda-show-future-repeats nil)
+(setq org-habit-show-done-always-green t)
 
-(setq org-agenda-start-day (org-today))
+(setq org-agenda-start-day "+0d")
 
 ;(setq org-agenda-hide-tags-regexp "noexport\\|ATTACH\\|")
 ;(add-hook 'org-capture-mode-hook (lambda () (call-interactively 'org-store-link)))

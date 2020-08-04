@@ -29,3 +29,23 @@
 (defun as/dired-mode-hook ()
   (dired-hide-dotfiles-mode +1))
 )
+
+(use-package! ivy-dired-history
+  :after dired
+  :config
+  (after! savehist
+    (add-to-list 'savehist-additional-variables 'ivy-dired-history-variable)))
+
+(use-package! dired-quick-sort
+  :after dired
+  :config
+  (dired-quick-sort-setup))
+
+(use-package! dired-filter
+  :after dired)
+
+(use-package! dired-subtree
+  :after dired)
+
+(use-package! dired-narrow
+  :after dired)

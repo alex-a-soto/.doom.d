@@ -1145,7 +1145,7 @@ Late deadlines first, then scheduled, then non-late deadlines"
   (string-match "Sched\.\\(.*\\)x:" date-str))
 
 ;; Use sticky agenda's so they persist
-(setq org-agenda-sticky t)
+(setq org-agenda-sticky nil)
 
 ;; The following setting is different from the document so that you
 ;; can override the document path by setting your path in the variable

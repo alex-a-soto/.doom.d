@@ -3,9 +3,10 @@
 
 <(Punch-In)>
 <(Morning Routine)>
+<(Refile Inbox)>
 <(Review Agenda)>
 
-* Agenda Views
+* Views
 <(Next actions)>
 <(Waiting for)>
 <(On hold)>
@@ -36,4 +37,6 @@
 * Actions
 <(Create habit)>
 <(View calendar)>
+<(Search directory)>
 <(News)>
+
