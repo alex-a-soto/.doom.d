@@ -1,5 +1,6 @@
 
 "HYPB"
+("Search" nil nil eval-elisp ((call-interactively (quote deadgrep))) "alexander.soto@gmail.com" "20200804:14:09:41" "alexander.soto" "20200804:14:09:54")
 ("Switch_to_buffer" nil nil eval-elisp ((counsel-switch-buffer)) "alexander.soto@gmail.com" "20200803:18:55:29" "alexander.soto" "20200803:18:56:40")
 ("PIM:_Zettelkasten" nil nil link-to-file-line ("./pim/zettelkasten.org" 3) "alexander.soto@gmail.com" "20200803:09:17:50" nil nil)
 ("Save_Bookmarks" nil nil eval-elisp ((call-interactively (quote bookmark-bmenu-save))) "alexander.soto@gmail.com" "20200716:14:24:42" nil nil)

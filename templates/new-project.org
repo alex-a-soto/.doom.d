@@ -8,7 +8,7 @@ DEADLINE: %^t
 %^{AREA}p
 - [ ] List specific tasks
 - [ ] Schedule next actions from generated tasks
-- [ ] Create a folders in Projects and Resources
-  <progn (mkdir (concat "~/1-Agenda/6-Action/" (nth 4 (org-heading-components))))
-  (mkdir (concat "~/2-Archive/6-Action/" (nth 4 (org-heading-components))))
-  (message "Folder created in Projects and Archive")>
+- [ ] Create a folders in Projects and Linked
+  <progn (mkdir (concat "~/1-Agenda/3-Persinter/Projects/" (nth 4 (org-heading-components))))
+  (mkdir (concat "~/2-Linked/3-Persinter/Projects/" (nth 4 (org-heading-components))))
+  (message "Folder created in Projects and Linked")>

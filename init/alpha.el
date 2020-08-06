@@ -20,7 +20,7 @@
 
        :completion
        (company           ; the ultimate code completion backend
-        +tng
+;        +tng
         +auto)
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
@@ -78,7 +78,8 @@
 
        :emacs
        (dired             ; making dired pretty [functional]
-        +icons)
+        +icons
+        )
        electric          ; smarter, keyword-based electric-indent
        ibuffer         ; interactive buffer management
        ;;undo              ; persistent, smarter undo for your inevitable mistakes
@@ -92,10 +93,11 @@
 
        :checkers
        syntax              ; tasing you for every semicolon you forget
-       spell             ; tasing you for misspelling mispelling
+;       spell             ; tasing you for misspelling mispelling
        ;;grammar           ; tasing grammar mistake every you make
 
        :tools
+       counsel-org-clock
        epresent
        bookmark-plus
        crux
@@ -106,9 +108,9 @@
        anki
        ;;ansible
        (debugger +lsp)          ; FIXME stepping through code, to help you add bugs
-       direnv
-       docker
-       editorconfig      ; let someone else argue about tabs vs spaces
+;       direnv
+;       docker
+;       editorconfig      ; let someone else argue about tabs vs spaces
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
@@ -123,7 +125,7 @@
        ;;pass              ; password manager for nerds
        pdf               ; pdf enhancements
        prodigy           ; FIXME managing external services & code builders
-       rgb               ; creating color strings
+;       rgb               ; creating color strings
        ;;taskrunner        ; taskrunner for all your projects
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
@@ -154,7 +156,6 @@
        ;;idris             ;
        json              ; At least it ain't XML
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
-       js
        (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
@@ -172,11 +173,10 @@
         +pandoc          ; export-with-pandoc support
         +pomodoro        ; be fruitful with the tomato technique
         +noter)
-       my-org
        ;;php               ; perl's insecure younger brother
        plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       (python +lsp)            ; beautiful is better than ugly
+       (python + lsp)            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
@@ -194,13 +194,14 @@
        web               ; the tubes
        ;;yaml              ; JSON, but readable
 
+
        :email
        ;;(mu4e +gmail)
        ;;notmuch
        ;;(wanderlust +gmail)
 
        :app
-       calendar
+;       calendar
        irc               ; how neckbeards socialize
        (rss +org)        ; emacs as an RSS reader
        ;; twitter           ; twitter client https://twitter.com/vnought

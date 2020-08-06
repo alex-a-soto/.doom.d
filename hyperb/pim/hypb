@@ -5,10 +5,9 @@
 ("Edit_Zettel" nil nil eval-elisp ((call-interactively (quote neuron-edit-zettel))) "alexander.soto@gmail.com" "20200803:09:14:32" "alexander.soto" "20200803:09:14:53")
 
 "agenda.org"
-("LXC" nil nil eval-elisp ((shell-command "lxc exec pristine -- su - dev -c (quote tmux) new-ses")) "alexander.soto@gmail.com" "20200804:11:56:51" "alexander.soto" "20200804:11:57:58")
+("Agenda" nil nil eval-elisp ((org-agenda nil " ")) "alexander.soto@gmail.com" "20200716:14:08:48" "alexander.soto" "20200806:19:04:48")
+("Clock_History" nil nil eval-elisp ((counsel-org-clock-history)) "alexander.soto@gmail.com" "20200806:17:27:04" nil nil)
 ("Refile_Inbox" nil nil eval-elisp ((as/treefactor-hydra)) "alexander.soto@gmail.com" "20200804:09:44:44" "alexander.soto" "20200804:09:45:41")
-("Search_directory" nil nil eval-elisp ((call-interactively (quote deadgrep))) "alexander.soto@gmail.com" "20200804:01:12:56" "alexander.soto" "20200804:01:13:16")
-("agenda" nil nil link-to-buffer-tmp ("*Org Agenda(t)*") "alexander.soto@gmail.com" "20200803:23:53:17" nil nil)
 ("News" nil nil eval-elisp ((elfeed)) "alexander.soto@gmail.com" "20200803:18:57:09" "alexander.soto" "20200803:18:57:17")
 ("Current_task" nil nil eval-elisp ((org-clock-goto)) "alexander.soto@gmail.com" "20200803:18:49:00" "alexander.soto" "20200803:18:59:36")
 ("Last_task" nil nil eval-elisp ((call-interactively (quote bh/clock-in-last-task))) "alexander.soto@gmail.com" "20200803:18:47:27" "alexander.soto" "20200803:18:59:51")
@@ -34,4 +33,3 @@
 ("Punch-In" nil nil eval-elisp ((call-interactively (quote bh/punch-in))) "alexander.soto@gmail.com" "20200803:10:54:43" "alexander.soto" "20200804:02:51:09")
 ("Bedtime_Routine" nil nil eval-elisp ((org-capture nil "rb")) "alexander.soto@gmail.com" "20200803:09:47:15" nil nil)
 ("Morning_Routine" nil nil eval-elisp ((org-capture nil "rm")) "alexander.soto@gmail.com" "20200803:09:40:44" "alexander.soto" "20200803:09:41:56")
-("Review_Agenda" nil nil eval-elisp ((org-agenda nil " ")) "alexander.soto@gmail.com" "20200716:14:08:48" "alexander.soto" "20200803:19:22:13")

@@ -4,7 +4,7 @@
 <(Punch-In)>
 <(Morning Routine)>
 <(Refile Inbox)>
-<(Review Agenda)>
+<(Agenda)>
 
 * Views
 <(Next actions)>
@@ -19,7 +19,7 @@
 <(Link)>
 <(Phone Call)>
 <(Flashcard)>
-* Journal entries
+* Journals
 <(Personal Journal)>
 <(Resilient Journal)>
 * Review
@@ -27,6 +27,7 @@
 <(Weekly)>
 <(Monthly)>
 * Clock
+<(Clock History)>
 <(Current task)>
 <(Last task)>
 
@@ -37,6 +38,4 @@
 * Actions
 <(Create habit)>
 <(View calendar)>
-<(Search directory)>
 <(News)>
-
