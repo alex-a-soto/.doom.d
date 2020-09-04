@@ -1,16 +1,14 @@
 #+TITLE: Personal Information Manager
 #+STARTUP: showall
 
-<(Punch-In)>
+* Routines
 <(Morning Routine)>
-<(Refile Inbox)>
-<(Agenda)>
-
+<(Bedtime Routine)>
 * Views
 <(Next actions)>
 <(Waiting for)>
 <(On hold)>
-<(Completed tasks)>
+<(Done)>
 * Capture
 <(Task)>
 <(Project)>
@@ -26,16 +24,22 @@
 <(Daily)>
 <(Weekly)>
 <(Monthly)>
-* Clock
-<(Clock History)>
-<(Current task)>
-<(Last task)>
-
-* End of day
-<(Bedtime Routine)>
-<(Punch-Out)>
-
 * Actions
 <(Create habit)>
-<(View calendar)>
 <(News)>
+<(Process Inbox)>
+* Zettelkasten
+<(New Zettel)>
+<(Daily Notes)>
+<(Edit Zettel)>
+
+<(Query tags)>
+<(Replace tag)>
+
+<(Start server)> <(Kill server)>
+<(Open index)>
+<(Open zettel)>
+
+<(Generate site)>
+<(Configuration)>
+<(Refresh cache)>

@@ -12,12 +12,15 @@
 (package! fd-dired :pin "5622041068d5fa2f299dbc8aa91fece0ba260086")
 
 (package! dired-k)
+(package! ivy-dired-history)
 
 (use-package! ivy-dired-history
   :after dired
   :config
   (after! savehist
     (add-to-list 'savehist-additional-variables 'ivy-dired-history-variable)))
+
+(package! dired-quick-sort)
 
 (use-package! dired-quick-sort
   :after dired
@@ -29,3 +32,5 @@
 (package! dired-subtree)
 
 (package! dired-narrow)
+
+(package! dired-hide-dotfiles)

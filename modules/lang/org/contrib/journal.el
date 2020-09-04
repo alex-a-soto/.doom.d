@@ -23,8 +23,13 @@
   ;; `org-journal-dir' defaults to "~/Documents/journal/", which is an odd
   ;; default, so we change it to {org-directory}/journal (we expand it after
   ;; org-journal is loaded).
-  (setq org-journal-dir "journal/"
+     (setq org-journal-dir "~/1-Agenda"
         org-journal-cache-file (concat doom-cache-dir "org-journal"))
+
+  (setq org-journal-time-prefix "** ")
+  (setq org-journal-time-format "")
+
+
 
   :config
   ;; Remove the orginal journal file detector and rely on `+org-journal-p'
@@ -67,4 +72,7 @@
           "y" #'org-journal-search-calendar-year))
         (:map org-journal-search-mode-map
          "n" #'org-journal-search-next
-         "p" #'org-journal-search-prev)))
+         "p" #'org-journal-search-prev))
+
+
+  )

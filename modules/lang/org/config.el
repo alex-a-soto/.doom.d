@@ -5,6 +5,7 @@
 (require 'org-protocol)
 (require 'org-id)
 ;(add-hook! 'org-capture-before-finalize-hook 'org-id-get-create)
+;
 
 
 
@@ -39,8 +40,12 @@
                             )))
 
                                         ; Set default column view headings: Task Effort Clock_Summary
+;(setq org-columns-default-format
+;      "%1PRIORITY(P) %50ITEM(Task) %12ALLTAGS(Area) %50OUTCOME(Motivation) %6Effort(Effort){:} %6ENERGY(Energy) %5CLOCKSUM(Clock) %10DEADLINE(Deadline)")
+
 (setq org-columns-default-format
-      "%1PRIORITY(P) %50ITEM(Task) %12ALLTAGS(Area) %50OUTCOME(Outcome) %6Effort(Effort){:} %6ENERGY(Energy) %5CLOCKSUM(Clock) %10DEADLINE(Deadline)")
+      "%50OUTCOME(Why) %50ITEM(Task) %1PRIORITY(P) %6Effort(Effort){:} %6ENERGY(Energy) %5CLOCKSUM(Clock) %12DEADLINE(Deadline) %12ALLTAGS(Area)")
+
 
 (setq org-attach-id-dir  "~/2-Linked/2-Codex")
 (setq org-attach-method 'mv)
@@ -201,6 +206,8 @@
        (concat "-" tag)))
 
 (setq org-agenda-auto-exclude-function 'bh/org-auto-exclude-function)
+
+(setq org-agenda-start-with-log-mode t)
 
 ;;
 ;; Resume clocking task when emacs is restarted
@@ -368,31 +375,16 @@ A prefix arg forces clock in of the default task."
 
 ;;; Custom agenda command definitions
 (setq org-agenda-custom-commands
-      (quote (("N" "Notes" tags "NOTE"
+      (quote (("n" "Notes" tags "NOTE"
                ((org-agenda-overriding-header "Notes")
                 (org-tags-match-list-sublevels t)))
               ("h" "Habits" tags-todo "STYLE=\"habit\""
                ((org-agenda-overriding-header "Habits")
                 (org-agenda-sorting-strategy
                  '(todo-state-down effort-up category-keep))))
-              (" " "Agenda"
+              (" " "Projects"
                ((agenda "" nil)
-                (tags "REFILE"
-                      ((org-agenda-overriding-header "Tasks to Refile")
-                       (org-tags-match-list-sublevels nil)))
 
-                (tags-todo "-CANCELLED/!NEXT"
-                           ((org-agenda-overriding-header (concat "Next Tasks"
-                                                                  (if bh/hide-scheduled-and-waiting-next-tasks
-                                                                      ""
-                                                                    " (including WAITING and SCHEDULED tasks)")))
-                            (org-agenda-skip-function 'bh/skip-project-tasks)
-                            (org-tags-match-list-sublevels t)
-                            (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                            (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                            (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
-                            (org-agenda-sorting-strategy
-                             '(todo-state-down effort-up category-keep))))
                 (tags-todo "-CANCELLED/!"
                            ((org-agenda-overriding-header "Stuck Projects")
                             (org-agenda-skip-function 'bh/skip-non-stuck-projects)
@@ -428,8 +420,39 @@ A prefix arg forces clock in of the default task."
                             (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-sorting-strategy
                              '(category-keep))))
+
+                                (tags-todo "-CANCELLED+WAITING|HOLD/!"
+                           ((org-agenda-overriding-header (concat "Waiting and Postponed Project Tasks"
+                                                                  (if bh/hide-scheduled-and-waiting-next-tasks
+                                                                      ""
+                                                                    " (including WAITING and SCHEDULED tasks)")))
+                            ;(org-agenda-skip-function 'bh/skip-non-tasks)
+                            (org-agenda-skip-function 'bh/skip-non-project-tasks)
+                            (org-tags-match-list-sublevels nil)
+                            (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)))
+
+
+                ))
+
+                ("0" "Tasks"
+                 ((agenda "" nil)
+
+                                  (tags-todo "-CANCELLED/!NEXT"
+                           ((org-agenda-overriding-header (concat "Next Tasks"
+                                                                  (if bh/hide-scheduled-and-waiting-next-tasks
+                                                                      ""
+                                                                    " (including WAITING and SCHEDULED tasks)")))
+                            (org-agenda-skip-function 'bh/skip-project-tasks)
+                            (org-tags-match-list-sublevels t)
+                            (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-sorting-strategy
+                             '(todo-state-down effort-up category-keep))))
+
                 (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!-NEXT"
-                           ((org-agenda-overriding-header (concat "Standalone Tasks"
+                           ((org-agenda-overriding-header (concat "Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
                                                                     " (including WAITING and SCHEDULED tasks)")))
@@ -439,19 +462,29 @@ A prefix arg forces clock in of the default task."
                             (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-sorting-strategy
                              '(category-keep))))
-                (tags-todo "-CANCELLED+WAITING|HOLD/!"
+
+                                (tags-todo "-CANCELLED+WAITING|HOLD/!"
                            ((org-agenda-overriding-header (concat "Waiting and Postponed Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
                                                                       ""
                                                                     " (including WAITING and SCHEDULED tasks)")))
-                            (org-agenda-skip-function 'bh/skip-non-tasks)
+;                            (org-agenda-skip-function 'bh/skip-non-tasks)
+                            (org-agenda-skip-function 'bh/skip-project-tasks)
                             (org-tags-match-list-sublevels nil)
                             (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)))
+
+                                ))
+
+
+              ("!" "Tasks to Archive"
+               ((agenda "" nil)
+
                 (tags "-REFILE/"
                       ((org-agenda-overriding-header "Tasks to Archive")
                        (org-agenda-skip-function 'bh/skip-non-archivable-tasks)
-                       (org-tags-match-list-sublevels nil))))
+                       (org-tags-match-list-sublevels nil)))
+                )
                nil))))
 
 
@@ -838,6 +871,7 @@ so change the default 'F' binding in the agenda to allow both"
           '(lambda () (org-defkey org-agenda-mode-map "F" 'bh/restrict-to-file-or-follow))
           'append)
 
+
 (defun bh/narrow-to-org-subtree ()
   (widen)
   (org-narrow-to-subtree)
@@ -905,7 +939,7 @@ so change the default 'F' binding in the agenda to allow both"
       (org-agenda-set-restriction-lock))))
 
 (add-hook 'org-agenda-mode-hook
-          '(lambda () (org-defkey org-agenda-mode-map "P" 'bh/narrow-to-project))
+          '(lambda () (org-defkey org-agenda-mode-map "M" 'bh/narrow-to-project))
           'append)
 
 (defvar bh/project-list nil)
@@ -1231,9 +1265,9 @@ Late deadlines first, then scheduled, then non-late deadlines"
                                       ("J" . org-clock-goto)
                                       ("K" . ignore)
                                       ("L" . ignore)
-                                      ("M" . ignore)
+                                      ("M" . bh/narrow-to-org-project)
                                       ("N" . bh/narrow-to-org-subtree)
-                                      ("P" . bh/narrow-to-org-project)
+                                      ("P" . org-pomodoro)
                                       ("Q" . ignore)
                                       ("R" . ignore)
                                       ("S" . ignore)
@@ -1399,30 +1433,52 @@ Late deadlines first, then scheduled, then non-late deadlines"
 (setq anki-flashcards "~/2-Linked/3-Persinter/1-persinter/flashcards.org")
 (setq rc-journal "~/1-Agenda/4-Time/2-Not-me/0-Resilient Coders/journal.org")
 
+(defun org-journal-find-location ()
+  ;; Open today's journal, but specify a non-nil prefix argument in order to
+  ;; inhibit inserting the heading; org-capture will insert the heading.
+  (org-journal-new-entry t)
+  ;; Position point on the journal's top-level heading so that org-capture
+  ;; will add the new entry as a child entry.
+  (goto-char (point-min)))
 
 (setq org-capture-templates
       (quote
-       (("t" "Task" entry (file org-inbox-file) "* TODO %^{Task} \n %U \n\n %?" :clock-in t :clock-resume t)
-        ("p" "Project" entry (file org-inbox-file) (file "~/.doom.d/templates/new-project.org") :clock-in t :clock-resume t)
-        ("m" "Meeting" entry (file org-inbox-file) "* %^{Meeting} :MEETING: \n\n%^{When?}t\n" :clock-in t :clock-resume t)
-        ("c" "Phone call" entry (file org-inbox-file) "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-        ("n" "Note" entry (file org-inbox-file) "* %^{Note} :NOTE: \n %U \n\n %?" :clock-in t :clock-resume t)
-        ("l" "Link" entry (file org-inbox-file) "* %(org-cliplink-capture) \n %U \n\n %?" :immediate-finish t)
-        ("h" "Habit" entry (file org-inbox-file) "* TODO %?\n SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")
+       (("t" "Task" entry (function org-journal-find-location) (file "~/.doom.d/templates/new-task.org") :clock-in t :clock-resume t)
+        ("p" "Project" entry (function org-journal-find-location) (file "~/.doom.d/templates/new-project.org") :clock-in t :clock-resume t)
+        ("m" "Meeting" entry (function org-journal-find-location) "* %^{Meeting} :MEETING: \n\n%^{When?}t\n" :clock-in t :clock-resume t)
+        ("c" "Phone call" entry (function org-journal-find-location) "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+        ("n" "Note" entry (function org-journal-find-location) "* %^{Note} :NOTE: \n %U \n\n %?" :clock-in t :clock-resume t)
+        ("l" "Link" entry (function org-journal-find-location) "* %(org-cliplink-capture) \n %U \n\n %?" :immediate-finish t)
+        ("h" "Habit" entry (function org-journal-find-location) "* TODO %?\n SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n")
         ("f" "Flashcard" entry (file anki-flashcards) "* %^{Title} \n:PROPERTIES: \n :ANKI_DECK: %^{Deck} \n :ANKI_NOTE_TYPE: Cloze \n :END: \n\n** Text \n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n %?" :clock-in t :clock-resume t)
 
         ("j" "Journal")
         ("jj" "Resilient" entry (file+function rc-journal org-reverse-datetree-goto-date-in-file) "* %^{Title} :resilient: \n %(org-insert-time-stamp nil t nil nil nil nil) \n\n %?" :clock-in t :clock-resume t)
-        ("jp" "Personal" entry (file org-inbox-file) "* %^{Title} %^g \n %(org-insert-time-stamp nil t nil nil nil nil) \n\n %?" :clock-in t :clock-resume t)
+        ("jp" "Personal" entry (function org-journal-find-location) "* %^{Title} %^g \n %(org-insert-time-stamp nil t nil nil nil nil) \n\n %?" :clock-in t :clock-resume t)
 
         ("r" "Routines")
-        ("rm" "Morning" entry (file org-inbox-file) (file "~/.doom.d/templates/morning-routine.org") :clock-in t :clock-resume t)
-        ("re" "Evening" entry (file org-inbox-file) (file "~/.doom.d/templates/evening-routine.org") :clock-in t :clock-resume t)
-        ("rb" "Bedtime" entry (file org-inbox-file) (file "~/.doom.d/templates/night-routine.org") :clock-in t :clock-resume t)
+        ("rm" "Morning" entry (function org-journal-find-location) (file "~/.doom.d/templates/morning-routine.org") :clock-in t :clock-resume t)
+        ("rn" "Night" entry (function org-journal-find-location) (file "~/.doom.d/templates/night-routine.org") :clock-in t :clock-resume t)
         ("rp" "Processing" entry (file+olp+datetree "/tmp/reviews.org") (file "~/.doom.d/templates/meta.org") :clock-in t :clock-resume t)
 
         ("w" "Revie(w)")
-        ("wd" "Daily" entry (file org-inbox-file) (file "~/.doom.d/templates/daily-review.org") :clock-in t :clock-resume t)
-        ("ww" "Weekly" entry (file org-inbox-file) (file "~/.doom.d/templates/weekly-review.org") :clock-in t :clock-resume t)
-        ("wm" "Monthly" entry (file org-inbox-file) (file "~/.doom.d/templates/monthly-review.org") :clock-in t :clock-resume t)
-        ("wy" "Yearly" entry (file org-inbox-file) (file "~/.doom.d/templates/annual-review.org") :clock-in t :clock-resume t))))
+        ("wd" "Daily" entry (function org-journal-find-location) (file "~/.doom.d/templates/daily-review.org") :clock-in t :clock-resume t)
+        ("ww" "Weekly" entry (function org-journal-find-location) (file "~/.doom.d/templates/weekly-review.org") :clock-in t :clock-resume t)
+        ("wm" "Monthly" entry (function org-journal-find-location) (file "~/.doom.d/templates/monthly-review.org") :clock-in t :clock-resume t)
+        ("wy" "Yearly" entry (function org-journal-find-location) (file "~/.doom.d/templates/annual-review.org") :clock-in t :clock-resume t))))
+
+(add-hook 'org-agenda-mode-hook
+          '(lambda () (org-defkey org-agenda-mode-map "P" 'org-pomodoro))
+          'append)
+
+     (setq org-journal-dir "~/1-Agenda/HUD/"
+        org-journal-cache-file (concat doom-cache-dir "org-journal"))
+
+  (setq org-journal-time-prefix "** ")
+  (setq org-journal-time-format "")
+  (setq org-journal-file-format "%Y-%m-%d.org")
+
+;(setq org-now-location (list (concat (format-time-string "~/1-Agenda/HUD/%Y-%m-%d.org"))))
+(setq org-now-location (list "~/1-Agenda/HUD/now.org"))
+
+(setq org-now-window-side 'left)

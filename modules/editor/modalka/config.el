@@ -57,24 +57,24 @@
       "<backtab>" 'crux-switch-to-previous-buffer
       "<return>" 'hkey-either
       "SPC" 'gbut:act
-      "<backspace>" 'ignore
+      "<backspace>" 'hhist:remove
 
       "a"  'ignore
       "b"  '+ivy/switch-workspace-buffer
       "c"  'org-capture
       "d"  'dired-jump
       "e"  'ignore
-      "f"  'counsel-find-file
+      "f"  'avy-goto-char ;'counsel-find-file
       "g"  'ignore
       "h"  'bury-buffer
       "i"  #'insert-mode-modalka
-      "j"  'avy-goto-char
-      "k"  'kill-buffer
+      "j"  'next-line ;'avy-goto-char
+      "k"  'previous-line;'kill-buffer
       "l"  'ignore
       "m"  'ignore
       "n"  'org-tree-to-indirect-buffer
       "o"  'other-window
-      "p"  'treefactor-throw
+      "p"  'ignore
       "q"  'ignore
       "r"  'counsel-recentf
       "s"  'swiper
@@ -88,11 +88,11 @@
 
 
       "A"  'ignore
-      "B"  'ivy-switch-buffer
+      "B"  'counsel-switch-buffer
       "C"  'ignore
       "D"  'ignore
       "E"  'ignore
-      "F"  'ignore
+      "F"  'counsel-find-file
       "G"  'ignore
       "H"  'unbury-buffer
       "I"  'ignore
@@ -159,5 +159,6 @@
 (map!
  (
   "C-s" #'swiper
+  "<f12>" #'as/find-overview
 ;  :desc "imenu" "C-c j" #'counsel-imenu
   ))

@@ -1,2 +1,0 @@
-;;; scratch
-(package! scratch)

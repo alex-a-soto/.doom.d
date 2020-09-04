@@ -206,3 +206,13 @@ we have to clean it up ourselves."
              wdired-finish-edit)
     (when +dired--git-info-p
       (dired-git-info-mode +1))))
+
+(defun my-dired-mode-hook ()
+  "My `dired' mode hook."
+  ;; To hide dot-files by default
+  (dired-hide-dotfiles-mode)
+
+  ;; To toggle hiding
+  (define-key dired-mode-map "." #'dired-hide-dotfiles-mode))
+
+(add-hook 'dired-mode-hook #'my-dired-mode-hook)

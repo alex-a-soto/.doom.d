@@ -19,7 +19,34 @@
 
 (defun as/find-overview ()
   (interactive)
-  (find-file "~/.doom.d/hyperb/HYPB"))
+  (find-file "~/.doom.d/hyperb/pim/agenda.org"))
+
+
+;; To add Org files directly to HyRolo so they're searchable, customize this
+;; variable:.
+;(setq hyrolo-file-list '("~/2-Linked/rolo.org"))
+
+;; You'll probably need to set the face for HyRolo's word highlighting. I chose
+;; purple with an underline:
+(setq hyrolo-highlight-face '(:background "SystemWindowText" :foreground "purple1" :underline t))
+
+;; The below prevents HyRolo from seeing Org's *bold* markup as a heading when
+;; it happens at the start of a line
+;(setq hyrolo-entry-regexp "^\\*+ ")
+
+;; To stop HyRolo inserting the date at the end of your Org entries when you
+;; visit them from HyRolo to make edits, add this after you load Hyperbole
+;; in your init:
+(remove-hook 'hyrolo-edit-hook #'hyrolo-set-date)
+
+;; To stop HyRolo adding the date at the end of your Org entries when you
+;; Add a record, add this after you load Hypervole in your init:
+(remove-hook 'hyrolo-add-hook #'hyrolo-set-date)
+
+;; Both of the above remove dates across the board when adding and editing
+;; though, which may not be what you want. I generally don't want edit
+;; dates, so I'm fine turning them off. YMMV.
+;;
 
 )
 

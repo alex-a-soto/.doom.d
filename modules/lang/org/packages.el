@@ -110,3 +110,9 @@
 
 (package! org-web-tools)
 (package! org-reverse-datetree)
+(package! org-mru-clock)
+(package! org-krita
+  :recipe (:host github :repo "lepisma/org-krita"))
+
+(package! org-now
+          :recipe (:host github :repo "alphapapa/org-now"))

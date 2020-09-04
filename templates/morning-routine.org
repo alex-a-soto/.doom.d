@@ -5,7 +5,9 @@
 - [ ] Take multivitamin
 - [ ] Make bed
 - [ ] Brush teeth
+- [ ] Meditate
+- [ ] Journal
+- [ ] Go for a walk
 - [ ] Shower
-- [ ] Pushup
 - [ ] Breakfast
 - [ ] Get dressed

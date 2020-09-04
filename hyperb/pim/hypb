@@ -1,18 +1,8 @@
 
-"zettelkasten.org"
-("Query_tags" nil nil eval-elisp ((call-interactively (quote neuron-query-tags))) "alexander.soto@gmail.com" "20200803:09:21:11" "alexander.soto" "20200803:09:21:49")
-("New_Zettel" nil nil eval-elisp ((call-interactively (quote neuron-new-zettel))) "alexander.soto@gmail.com" "20200803:09:19:19" nil nil)
-("Edit_Zettel" nil nil eval-elisp ((call-interactively (quote neuron-edit-zettel))) "alexander.soto@gmail.com" "20200803:09:14:32" "alexander.soto" "20200803:09:14:53")
-
 "agenda.org"
-("Agenda" nil nil eval-elisp ((org-agenda nil " ")) "alexander.soto@gmail.com" "20200716:14:08:48" "alexander.soto" "20200806:19:04:48")
-("Clock_History" nil nil eval-elisp ((counsel-org-clock-history)) "alexander.soto@gmail.com" "20200806:17:27:04" nil nil)
-("Refile_Inbox" nil nil eval-elisp ((as/treefactor-hydra)) "alexander.soto@gmail.com" "20200804:09:44:44" "alexander.soto" "20200804:09:45:41")
+("Process_Inbox" nil nil eval-elisp ((as/treefactor-hydra)) "alexander.soto@gmail.com" "20200825:03:05:11" nil nil)
 ("News" nil nil eval-elisp ((elfeed)) "alexander.soto@gmail.com" "20200803:18:57:09" "alexander.soto" "20200803:18:57:17")
-("Current_task" nil nil eval-elisp ((org-clock-goto)) "alexander.soto@gmail.com" "20200803:18:49:00" "alexander.soto" "20200803:18:59:36")
-("Last_task" nil nil eval-elisp ((call-interactively (quote bh/clock-in-last-task))) "alexander.soto@gmail.com" "20200803:18:47:27" "alexander.soto" "20200803:18:59:51")
-("View_calendar" nil nil eval-elisp ((calendar)) "alexander.soto@gmail.com" "20200803:18:39:31" "alexander.soto" "20200803:18:46:11")
-("Completed_tasks" nil nil eval-elisp ((org-todo-list "DONE")) "alexander.soto@gmail.com" "20200803:18:28:52" "alexander.soto" "20200803:18:29:10")
+("Done" nil nil eval-elisp ((org-todo-list "DONE")) "alexander.soto@gmail.com" "20200803:18:28:52" "alexander.soto" "20200811:19:45:06")
 ("On_hold" nil nil eval-elisp ((org-todo-list "HOLD")) "alexander.soto@gmail.com" "20200803:18:15:18" "alexander.soto" "20200803:18:29:19")
 ("Waiting_for" nil nil eval-elisp ((org-todo-list "WAITING")) "alexander.soto@gmail.com" "20200803:18:14:55" nil nil)
 ("Next_actions" nil nil eval-elisp ((org-todo-list "NEXT")) "alexander.soto@gmail.com" "20200803:17:52:52" "alexander.soto" "20200803:18:42:36")
@@ -29,7 +19,17 @@
 ("Task" nil nil eval-elisp ((org-capture nil "t")) "alexander.soto@gmail.com" "20200803:17:22:55" nil nil)
 ("Personal_Journal" nil nil eval-elisp ((org-capture nil "jp")) "alexander.soto@gmail.com" "20200803:17:09:49" nil nil)
 ("Resilient_Journal" nil nil eval-elisp ((org-capture nil "jj")) "alexander.soto@gmail.com" "20200803:17:09:24" nil nil)
-("Punch-Out" nil nil eval-elisp ((call-interactively (quote bh/punch-out))) "alexander.soto@gmail.com" "20200803:16:41:00" nil nil)
-("Punch-In" nil nil eval-elisp ((call-interactively (quote bh/punch-in))) "alexander.soto@gmail.com" "20200803:10:54:43" "alexander.soto" "20200804:02:51:09")
 ("Bedtime_Routine" nil nil eval-elisp ((org-capture nil "rb")) "alexander.soto@gmail.com" "20200803:09:47:15" nil nil)
 ("Morning_Routine" nil nil eval-elisp ((org-capture nil "rm")) "alexander.soto@gmail.com" "20200803:09:40:44" "alexander.soto" "20200803:09:41:56")
+("Open_index" nil nil eval-elisp ((call-interactively (quote neuron-rib-open-z-index))) "alexander.soto@gmail.com" "20200811:19:10:35" nil nil)
+("Configuration" nil nil eval-elisp ((call-interactively (quote neuron-edit-zettelkasten-configuration))) "alexander.soto@gmail.com" "20200811:19:09:54" nil nil)
+("Replace_tag" nil nil eval-elisp ((call-interactively (quote neuron-replace-tag))) "alexander.soto@gmail.com" "20200811:14:35:28" "alexander.soto" "20200811:14:35:39")
+("Daily_Notes" nil nil eval-elisp ((neuron-open-daily-notes)) "alexander.soto@gmail.com" "20200811:14:29:18" "alexander.soto" "20200811:14:29:31")
+("Refresh_cache" nil nil eval-elisp ((neuron-refresh)) "alexander.soto@gmail.com" "20200811:14:28:36" nil nil)
+("Kill_server" nil nil eval-elisp ((neuron-rib-kill)) "alexander.soto@gmail.com" "20200811:14:27:08" nil nil)
+("Open_zettel" nil nil eval-elisp ((neuron-rib-open-zettel)) "alexander.soto@gmail.com" "20200811:14:26:22" nil nil)
+("Start_server" nil nil eval-elisp ((neuron-rib-serve)) "alexander.soto@gmail.com" "20200811:14:24:39" "alexander.soto" "20200811:14:27:23")
+("Generate_site" nil nil eval-elisp ((neuron-rib-generate)) "alexander.soto@gmail.com" "20200811:14:23:51" nil nil)
+("Query_tags" nil nil eval-elisp ((call-interactively (quote neuron-query-tags))) "alexander.soto@gmail.com" "20200803:09:21:11" "alexander.soto" "20200803:09:21:49")
+("New_Zettel" nil nil eval-elisp ((call-interactively (quote neuron-new-zettel))) "alexander.soto@gmail.com" "20200803:09:19:19" nil nil)
+("Edit_Zettel" nil nil eval-elisp ((call-interactively (quote neuron-edit-zettel))) "alexander.soto@gmail.com" "20200803:09:14:32" "alexander.soto" "20200803:09:14:53")

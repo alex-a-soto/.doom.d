@@ -6,16 +6,15 @@
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
-   ["#21242b" "#ff6c6b" "#98be65" "#ECBE7B" "#51afef" "#c678dd" "#46D9FF" "#bbc2cf"])
- '(bmkp-last-as-first-bookmark-file "/home/alexander/.emacs.d/.local/etc/bookmarks")
+   ["#282c34" "#ff6c6b" "#98be65" "#ECBE7B" "#51afef" "#c678dd" "#46D9FF" "#bbc2cf"])
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/.local/etc/bookmarks")
  '(doom-modeline-mode t)
  '(global-display-line-numbers-mode t)
  '(jdee-db-active-breakpoint-face-colors (cons "#1B2229" "#51afef"))
  '(jdee-db-requested-breakpoint-face-colors (cons "#1B2229" "#98be65"))
  '(jdee-db-spec-breakpoint-face-colors (cons "#1B2229" "#3f444a"))
  '(modalka-excluded-modes
-   (quote
-    (ediff-mode helpful-mode dired-mode magit-mode magit-popup-mode debugger-mode ediff-mode help-mode git-rebase-mode help-mode org-agenda-mode org-capture-mode emms-playlist-mode pdf-tools-modes undo-tree-visualizer-mode)))
+   '(ediff-mode helpful-mode dired-mode magit-mode magit-popup-mode debugger-mode ediff-mode help-mode git-rebase-mode help-mode org-agenda-mode org-capture-mode emms-playlist-mode pdf-tools-modes undo-tree-visualizer-mode))
  '(mouse-1-click-follows-link nil)
  '(my-font-size 15)
  '(objed-cursor-color "#ff6c6b")
@@ -23,11 +22,55 @@
  '(rustic-ansi-faces
    ["#282c34" "#ff6c6b" "#98be65" "#ECBE7B" "#51afef" "#c678dd" "#46D9FF" "#bbc2cf"])
  '(safe-local-variable-values
-   (quote
-    ((org-file-tags
-      (quote
-       ("business-money")))
-     (org-file-tags "business-money"))))
+   '((eval progn
+           (set
+            (make-local-variable 'org-time-clocksum-format)
+            '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
+           (setq org-latex-tables-centered nil org-latex-default-table-environment "longtable")
+           (local-set-key
+            (kbd "<f5>")
+            (lambda nil
+              (interactive)
+              (beginning-of-buffer)
+              (re-search-forward "Invoice number: \\([0-9]+\\)")
+              (let
+                  ((n
+                    (string-to-number
+                     (match-string 1))))
+                (kill-region
+                 (match-beginning 1)
+                 (match-end 1))
+                (insert
+                 (format "%d"
+                         (1+ n))))
+              (beginning-of-buffer)
+              (re-search-forward "Invoice date: *")
+              (kill-region
+               (point)
+               (save-excursion
+                 (end-of-line)
+                 (point)))
+              (org-insert-time-stamp
+               (current-time)
+               nil t)
+              (beginning-of-buffer)
+              (search-forward "#+BEGIN: clocktable")
+              (unwind-protect
+                  (progn
+                    (defadvice org-table-goto-column
+                        (before always-make-new-columns
+                                (n &optional on-delim force)
+                                activate)
+                      "always adds new columns when we move to them"
+                      (setq force t))
+                    (org-clocktable-shift 'right 1))
+                (ad-deactivate 'org-table-goto-column))
+              (beginning-of-buffer)
+              (search-forward "| totaltarget")
+              (org-table-recalculate t))))
+     (org-file-tags
+      '("business-money"))
+     (org-file-tags "business-money")))
  '(vc-annotate-background "#282c34")
  '(vc-annotate-color-map
    (list
