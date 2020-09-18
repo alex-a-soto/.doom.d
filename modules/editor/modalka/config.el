@@ -74,8 +74,8 @@
       "m"  'ignore
       "n"  'org-tree-to-indirect-buffer
       "o"  'other-window
-      "p"  'ignore
-      "q"  'ignore
+      "p"  'as/treefactor-hydra
+      "q"  'org-working-set
       "r"  'counsel-recentf
       "s"  'swiper
       "t"  '+treemacs/toggle
@@ -103,7 +103,7 @@
       "N"  'ignore
       "O"  'ignore
       "P"  'ignore
-      "Q"  'ignore
+      "Q"  'as/working-set
       "R"  'ignore
       "S"  'ignore
       "T"  'ignore

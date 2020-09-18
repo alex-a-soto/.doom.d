@@ -115,4 +115,6 @@
   :recipe (:host github :repo "lepisma/org-krita"))
 
 (package! org-now
-          :recipe (:host github :repo "alphapapa/org-now"))
+           :recipe (:host github :repo "alphapapa/org-now"))
+
+(package! org-working-set)

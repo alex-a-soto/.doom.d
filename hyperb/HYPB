@@ -18,7 +18,7 @@
 <(ZK: Edit zettel)>
 <(ZK: Open a Zettel)>
 <(GTD: Refile Inbox)>
-<(Journal: Personal)>
+<(Journal)>
 <(Journal: Resilient)>
 <(Capture: Task)>
 <(ZK: Start Server)>
@@ -33,5 +33,12 @@
 <(Emacs: Change theme)>
 <(Insert Snippet)>
 <(Capture: Note)>
-<(Open Journal)>
-<(Now)>
+<(Journal: Open today)>
+(Routines: Night)>
+<(Bookmarks: Jump)>
+
+<(Capture: Meeting)>
+<(Journal: Open RC)>
+<(Store Link)>
+<(Insert Link)>
+<(Clock-in)>

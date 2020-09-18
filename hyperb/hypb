@@ -1,7 +1,14 @@
 
 "HYPB"
-("Now" nil nil eval-elisp ((org-now)) "alexander.soto@gmail.com" "20200903:14:29:33" nil nil)
-("Open_Journal" nil nil eval-elisp ((org-journal-open-current-journal-file)) "alexander.soto@gmail.com" "20200903:12:50:26" nil nil)
+("Clock-in" nil nil eval-elisp ((org-clock-in)) "alexander.soto@gmail.com" "20200916:14:08:51" nil nil)
+("Journal:_Personal" nil nil eval-elisp ((org-capture nil "jl")) "alexander.soto@gmail.com" "20200813:20:58:54" "alexander.soto" "20200916:09:42:22")
+("Insert_Link" nil nil eval-elisp ((call-interactively 'org-insert-link)) "alexander.soto@gmail.com" "20200915:10:29:14" nil nil)
+("Store_Link" nil nil eval-elisp ((call-interactively 'org-store-link)) "alexander.soto@gmail.com" "20200915:10:28:59" "alexander.soto" "20200915:10:30:49")
+("Journal:_Open_RC" nil nil eval-elisp ((find-file rc-journal)) "alexander.soto@gmail.com" "20200915:08:15:07" "alexander.soto" "20200916:09:41:28")
+("Capture:_Meeting" nil nil eval-elisp ((org-capture nil "m")) "alexander.soto@gmail.com" "20200915:08:00:48" nil nil)
+("Bookmarks:_Jump" nil nil eval-elisp ((call-interactively 'bookmark-jump)) "alexander.soto@gmail.com" "20200907:03:30:03" "alexander.soto" "20200907:03:30:19")
+("Routines:_Night" nil nil eval-elisp ((org-capture nil "rn")) "alexander.soto@gmail.com" "20200907:02:29:37" nil nil)
+("Journal:_Open_today" nil nil eval-elisp ((org-journal-open-current-journal-file)) "alexander.soto@gmail.com" "20200903:12:50:26" "alexander.soto" "20200916:09:40:48")
 ("Capture:_Note" nil nil eval-elisp ((org-capture nil "n")) "alexander.soto@gmail.com" "20200826:19:15:00" nil nil)
 ("Insert_Snippet" nil nil eval-elisp ((yas-insert-snippet)) "alexander.soto@gmail.com" "20200826:16:17:47" "alexander.soto" "20200826:16:18:03")
 ("Emacs:_Change_theme" nil nil eval-elisp ((counsel-load-theme)) "alexander.soto@gmail.com" "20200826:14:14:12" nil nil)
@@ -15,8 +22,7 @@
 ("ZK:_Kill_server" nil nil eval-elisp ((neuron-rib-kill)) "alexander.soto@gmail.com" "20200825:03:01:50" nil nil)
 ("ZK:_Start_Server" nil nil eval-elisp ((neuron-rib-serve)) "alexander.soto@gmail.com" "20200825:03:01:37" nil nil)
 ("Capture:_Task" nil nil eval-elisp ((org-capture nil "t")) "alexander.soto@gmail.com" "20200824:16:24:23" nil nil)
-("Journal:_Resilient" nil nil eval-elisp ((org-capture nil "jj")) "alexander.soto@gmail.com" "20200813:20:59:09" nil nil)
-("Journal:_Personal" nil nil eval-elisp ((org-capture nil "jp")) "alexander.soto@gmail.com" "20200813:20:58:54" nil nil)
+("Journal:_Resilient" nil nil eval-elisp ((org-capture nil "jj")) "alexander.soto@gmail.com" "20200813:20:59:09" "alexander.soto" "20200916:13:55:47")
 ("GTD:_Refile_Inbox" nil nil eval-elisp ((as/treefactor-hydra)) "alexander.soto@gmail.com" "20200813:15:14:38" nil nil)
 ("ZK:_Open_a_Zettel" nil nil eval-elisp ((neuron-rib-open-zettel)) "alexander.soto@gmail.com" "20200812:18:55:01" "alexander.soto" "20200825:18:30:14")
 ("ZK:_Edit_zettel" nil nil eval-elisp ((call-interactively (quote neuron-edit-zettel))) "alexander.soto@gmail.com" "20200812:18:35:31" nil nil)

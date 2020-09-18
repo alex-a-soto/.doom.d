@@ -1,14 +1,3 @@
-* TODO %^{Project name} %^g
+* TODO %^{Project name}
 DEADLINE: %^t
-:PROPERTIES:
-:STARTDATE: %u
-:END:
-%(org-insert-time-stamp nil t nil nil nil nil)
 %^{OUTCOME}p
-%^{AREA}p
-- [ ] List specific tasks
-- [ ] Schedule next actions from generated tasks
-- [ ] Create a folders in Projects and Linked
-  <progn (mkdir (concat "~/1-Agenda/3-Persinter/Projects/" (nth 4 (org-heading-components))))
-  (mkdir (concat "~/2-Linked/3-Persinter/Projects/" (nth 4 (org-heading-components))))
-  (message "Folder created in Projects and Linked")>

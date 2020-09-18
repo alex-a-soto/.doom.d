@@ -1,10 +1,8 @@
 * Morning Routine [0/8]
-%(org-insert-time-stamp nil t nil nil nil nil)
-
+- [ ] Brush teeth
 - [ ] Drink water
 - [ ] Take multivitamin
 - [ ] Make bed
-- [ ] Brush teeth
 - [ ] Meditate
 - [ ] Journal
 - [ ] Go for a walk
